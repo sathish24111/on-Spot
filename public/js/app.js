@@ -76,6 +76,331 @@ const LIMITS = {
   bothTotalMax: 4
 };
 
+// ============================================================
+// REAL-TIME BACKGROUND AUTO-SYNC ENGINE (NO PAGE RELOAD)
+// ============================================================
+const LiveSyncEngine = {
+  syncIntervalMs: 3000,
+  idleIntervalMs: 10000,
+  timerId: null,
+  isSyncing: false,
+  lastSignatures: {},
+
+  getSignature(data) {
+    try {
+      return JSON.stringify(data);
+    } catch (e) {
+      return String(Date.now());
+    }
+  },
+
+  hasChanged(key, data) {
+    const sig = this.getSignature(data);
+    if (this.lastSignatures[key] === sig) {
+      return false;
+    }
+    this.lastSignatures[key] = sig;
+    return true;
+  },
+
+  flashSyncIndicator() {
+    const ind = document.getElementById('liveSyncStatusIndicator');
+    if (ind) {
+      ind.classList.add('syncing');
+      setTimeout(() => ind.classList.remove('syncing'), 600);
+    }
+  },
+
+  init() {
+    this.startHeartbeat(this.syncIntervalMs);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this.startHeartbeat(this.syncIntervalMs);
+        this.triggerImmediateSync();
+      } else {
+        this.startHeartbeat(this.idleIntervalMs);
+      }
+    });
+
+    window.addEventListener('focus', () => {
+      this.triggerImmediateSync();
+    });
+  },
+
+  startHeartbeat(interval) {
+    if (this.timerId) clearInterval(this.timerId);
+    this.timerId = setInterval(() => {
+      this.syncActiveView();
+    }, interval);
+  },
+
+  async triggerImmediateSync() {
+    if (this.isSyncing) return;
+    await this.syncActiveView();
+  },
+
+  async syncActiveView() {
+    if (this.isSyncing) return;
+    this.isSyncing = true;
+
+    try {
+      // 1. Always sync global stats & pending badges
+      await this.syncGlobalStats();
+
+      // 2. Identify active panel
+      const activePanel = document.querySelector('.app-view-panel.active');
+      const activeViewId = activePanel ? activePanel.id : 'viewHome';
+
+      if (activeViewId === 'viewAdminMaster') {
+        await this.syncAdminMasterView();
+      } else if (activeViewId === 'viewCoordinatorLogin' && isCoordinatorLoggedIn) {
+        await this.syncCoordinatorView();
+      } else if (activeViewId === 'viewEventIssue') {
+        await this.syncEventIssueView();
+      }
+    } catch (err) {
+      console.warn('Auto-sync cycle notice:', err);
+    } finally {
+      this.isSyncing = false;
+    }
+  },
+
+  async syncGlobalStats() {
+    try {
+      const res = await fetch('/api/stats');
+      const data = await res.json();
+      if (data.success && data.stats) {
+        const s = data.stats;
+        if (this.hasChanged('global_stats', s)) {
+          this.flashSyncIndicator();
+          const elOnline = document.getElementById('kpiAdminOnlineCount');
+          const elSpot = document.getElementById('kpiAdminSpotCount');
+          const elFfPlayers = document.getElementById('kpiAdminFfPlayersCount');
+          const elFfTeams = document.getElementById('kpiAdminFfTeamsCount');
+          const elTotal = document.getElementById('kpiAdminTotalCount');
+          const elPassBreakdown = document.getElementById('kpiAdminPassBreakdown');
+          const elRevenue = document.getElementById('kpiAdminTotalRevenue');
+          const elPendingTotal = document.getElementById('kpiAdminPendingTotal');
+          const elPendingSub = document.getElementById('kpiAdminPendingSub');
+          const elTabBadge = document.getElementById('tabApprovalsBadge');
+
+          if (elOnline) elOnline.textContent = s.onlineCount;
+          if (elSpot) elSpot.textContent = s.spotCount;
+          if (elFfPlayers) elFfPlayers.textContent = s.freefireTotalPlayers;
+          if (elFfTeams) elFfTeams.textContent = `${s.freefireTeamsCount} Squads / Teams formed`;
+          if (elTotal) elTotal.textContent = s.totalStudents;
+          if (elPassBreakdown) elPassBreakdown.textContent = `Day 1: ${s.day1Count} | Day 2: ${s.day2Count} | Both: ${s.bothDaysCount}`;
+          if (elRevenue) elRevenue.textContent = `₹${(s.totalRevenue || 0).toLocaleString('en-IN')}`;
+
+          const totalPending = (s.pendingProfileRequestsCount || 0) + (s.pendingEventRequestsCount || 0);
+          if (elPendingTotal) elPendingTotal.textContent = totalPending;
+          if (elPendingSub) elPendingSub.textContent = `${s.pendingProfileRequestsCount || 0} Profile | ${s.pendingEventRequestsCount || 0} Event Changes`;
+          if (elTabBadge) elTabBadge.textContent = totalPending;
+        }
+      }
+    } catch (e) { }
+  },
+
+  async syncAdminMasterView() {
+    const subtab = typeof currentMasterActiveSubtab !== 'undefined' ? currentMasterActiveSubtab : 'directory';
+
+    if (subtab === 'directory') {
+      try {
+        const res = await fetch('/api/admin/all-students');
+        const data = await res.json();
+        if (data.success && data.students) {
+          if (this.hasChanged('admin_directory', data.students)) {
+            this.flashSyncIndicator();
+            currentMasterStudents = data.students;
+            filterMasterDirectoryTable();
+          }
+        }
+      } catch (e) { }
+    } else if (subtab === 'approvals') {
+      try {
+        const [profRes, evtRes] = await Promise.all([
+          fetch('/api/admin/edit-requests'),
+          fetch('/api/admin/event-change-requests')
+        ]);
+        const profData = await profRes.json();
+        const evtData = await evtRes.json();
+
+        if (profData.success && this.hasChanged('admin_prof_requests', profData.requests || [])) {
+          this.flashSyncIndicator();
+          renderMasterProfileRequests(profData.requests || []);
+        }
+        if (evtData.success && this.hasChanged('admin_evt_requests', evtData.requests || [])) {
+          this.flashSyncIndicator();
+          renderMasterEventRequests(evtData.requests || []);
+        }
+      } catch (e) { }
+    } else if (subtab === 'events') {
+      if (typeof currentMasterSelectedEventId !== 'undefined' && currentMasterSelectedEventId) {
+        try {
+          const res = await fetch(`/api/registrations?eventId=${currentMasterSelectedEventId}`);
+          const data = await res.json();
+          if (data.success && data.students) {
+            if (this.hasChanged(`admin_event_${currentMasterSelectedEventId}`, data.students)) {
+              this.flashSyncIndicator();
+              currentMasterEventStudents = data.students;
+              // Calculate live 4 KPI Counters
+              const totalEnrolled = currentMasterEventStudents.length;
+              const checkedInCount = currentMasterEventStudents.filter(st =>
+                (st.events || []).some(e => e.event_id === currentMasterSelectedEventId && e.event_status === 'COMPLETED')
+              ).length;
+              const foodCount = currentMasterEventStudents.filter(st => st.food_given).length;
+              const tagCount = currentMasterEventStudents.filter(st => st.tag_given).length;
+
+              const elTotal = document.getElementById('adminEvtCount');
+              const elCheckedIn = document.getElementById('adminEvtCheckedInCount');
+              const elFood = document.getElementById('adminEvtFoodCount');
+              const elTag = document.getElementById('adminEvtTagCount');
+
+              if (elTotal) elTotal.textContent = totalEnrolled;
+              if (elCheckedIn) elCheckedIn.textContent = checkedInCount;
+              if (elFood) elFood.textContent = foodCount;
+              if (elTag) elTag.textContent = tagCount;
+
+              filterMasterInsideEventTable();
+            }
+          }
+        } catch (e) { }
+      }
+    } else if (subtab === 'freefire') {
+      try {
+        const [soloRes, teamsRes] = await Promise.all([
+          fetch('/api/freefire/unassigned-online-players'),
+          fetch('/api/freefire/teams')
+        ]);
+        const soloData = await soloRes.json();
+        const teamsData = await teamsRes.json();
+
+        if (soloData.success && this.hasChanged('admin_ff_solos', soloData.players || [])) {
+          this.flashSyncIndicator();
+          currentMasterFfSoloPlayers = soloData.players || [];
+          const countBadge = document.getElementById('adminFfSoloCount');
+          if (countBadge) countBadge.textContent = currentMasterFfSoloPlayers.length;
+          filterMasterFfSoloTable();
+        }
+        if (teamsData.success && this.hasChanged('admin_ff_teams', teamsData.teams || [])) {
+          this.flashSyncIndicator();
+          currentMasterFfTeams = teamsData.teams || [];
+          const countHeader = document.getElementById('adminFfTeamsHeaderCount');
+          if (countHeader) countHeader.textContent = currentMasterFfTeams.length;
+          filterMasterFfTeamsGrid();
+        }
+      } catch (e) { }
+    } else if (subtab === 'counters') {
+      try {
+        const [countersRes, facultyRes] = await Promise.all([
+          fetch('/api/counters'),
+          fetch('/api/faculty-list')
+        ]);
+        const countersData = await countersRes.json();
+        const facultyData = await facultyRes.json();
+
+        if (countersData.success && facultyData.success) {
+          const combo = { c: countersData.counters, f: facultyData.faculty };
+          if (this.hasChanged('admin_counters_setup', combo)) {
+            this.flashSyncIndicator();
+            currentCountersList = countersData.counters || [];
+            currentFacultyList = facultyData.faculty || [];
+            renderAdminCountersGrid();
+            populateSpotCounterSelects(currentCountersList);
+          }
+        }
+      } catch (e) { }
+    } else if (subtab === 'counter-reg') {
+      try {
+        const elCounter = document.getElementById('filterReportCounter');
+        const elFaculty = document.getElementById('filterReportFaculty');
+        const elDate = document.getElementById('filterReportDate');
+        const elSearch = document.getElementById('filterReportSearch');
+
+        const counterVal = elCounter ? elCounter.value : 'all';
+        const facultyVal = elFaculty ? elFaculty.value : 'all';
+        const dateVal = elDate ? elDate.value : '';
+        const searchVal = elSearch ? elSearch.value.trim() : '';
+
+        const params = new URLSearchParams();
+        if (counterVal && counterVal !== 'all') params.append('counter', counterVal);
+        if (facultyVal && facultyVal !== 'all') params.append('faculty', facultyVal);
+        if (dateVal) params.append('date', dateVal);
+        if (searchVal) params.append('q', searchVal);
+
+        const res = await fetch(`/api/admin/counter-report?${params.toString()}`);
+        const data = await res.json();
+        if (data.success && this.hasChanged('admin_counter_report', data)) {
+          this.flashSyncIndicator();
+          currentCounterReportData = data;
+          renderCounterReportSummary(data.summary, data.counterWiseCounts);
+          renderCounterCardsOverview(data.counterWiseCounts, counterVal);
+          populateFacultyFilterOptions(data.counterWiseCounts);
+          renderCounterReportTable(data.registrations || []);
+        }
+      } catch (e) { }
+    }
+  },
+
+  async syncCoordinatorView() {
+    if (!currentCoordinatorEventId) return;
+
+    try {
+      const res = await fetch(`/api/registrations?eventId=${currentCoordinatorEventId}`);
+      const data = await res.json();
+      if (data.success && data.students) {
+        if (this.hasChanged(`coord_students_${currentCoordinatorEventId}`, data.students)) {
+          this.flashSyncIndicator();
+          currentEventStudents = data.students;
+          const countEl = document.getElementById('coordEventCount');
+          if (countEl) countEl.textContent = currentEventStudents.length;
+          updateEventTeamSelectionUI();
+          filterCoordinatorTable();
+        }
+      }
+
+      const evt = (typeof eventCatalog !== 'undefined' && eventCatalog) ? eventCatalog.find(e => e.id === currentCoordinatorEventId) : null;
+      if (evt && (evt.max_participants || 1) > 1) {
+        const teamsRes = await fetch(`/api/coordinator/event-teams?eventId=${currentCoordinatorEventId}`);
+        const teamsData = await teamsRes.json();
+        if (teamsData.success && teamsData.teams) {
+          if (this.hasChanged(`coord_teams_${currentCoordinatorEventId}`, teamsData.teams)) {
+            this.flashSyncIndicator();
+            currentEventTeams = teamsData.teams || [];
+            const badge = document.getElementById('coordTeamsCountBadge');
+            if (badge) badge.textContent = currentEventTeams.length;
+            renderCoordinatorFormedTeams();
+          }
+        }
+      }
+    } catch (e) { }
+  },
+
+  async syncEventIssueView() {
+    try {
+      const [regsRes, pendingRes] = await Promise.all([
+        fetch('/api/registrations'),
+        fetch('/api/coordinator/pending-event-requests')
+      ]);
+      const regsData = await regsRes.json();
+      const pendingData = await pendingRes.json();
+
+      if (regsData.success && pendingData.success) {
+        const combo = { r: regsData.students, p: pendingData.pendingStudentIds };
+        if (this.hasChanged('event_issue_data', combo)) {
+          this.flashSyncIndicator();
+          currentEventIssueParticipants = regsData.students || [];
+          pendingEventChangeStudentIds = new Set(pendingData.pendingStudentIds || []);
+          filterEventIssueTable();
+        }
+      }
+    } catch (e) { }
+  }
+};
+
+window.LiveSyncEngine = LiveSyncEngine;
+
 document.addEventListener('DOMContentLoaded', () => {
   initMainNavigation();
   initHomeScreen();
@@ -93,6 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCountersAndReports();
   initAccessControl();
   initRouter();
+  LiveSyncEngine.init();
 
   // Restore coordinator session if active
   const savedCoordEventKey = sessionStorage.getItem('techraga_coord_event_key');
@@ -1143,6 +1469,9 @@ async function handleConfirmRegistration() {
 
       openModal('modalSuccess');
       loadEventCatalog();
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Registration Failed: ${data.message}`);
     }
@@ -1189,6 +1518,9 @@ async function handleWizardFinalSubmit() {
     if (data.success) {
       showRegistrationSuccess(data);
       showToast(`Registration successful! Code: ${data.registration.reg_code}`, 'success');
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Registration Failed: ${data.message}`, 'error');
     }
@@ -2206,6 +2538,9 @@ window.handleConfirmCreateEventTeam = async function () {
       await loadEventParticipants(currentCoordinatorEventId);
       await loadEventTeams(currentCoordinatorEventId);
       switchCoordinatorSubtab('teams');
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(data.message || 'Failed to create team.');
     }
@@ -2305,6 +2640,9 @@ window.handleDisbandEventTeam = async function (teamId, teamCode) {
       showAlert(data.message || 'Team disbanded successfully.');
       await loadEventParticipants(currentCoordinatorEventId);
       await loadEventTeams(currentCoordinatorEventId);
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(data.message || 'Failed to disband team.');
     }
@@ -2337,6 +2675,9 @@ window.handleCoordinatorAction = async function (studentId, actionType, eventId)
       }
       if (typeof loadMasterStudentDirectory === 'function' && document.getElementById('adminPaneDirectory')?.classList.contains('active')) {
         loadMasterStudentDirectory();
+      }
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
       }
     } else {
       showAlert(`Action Failed: ${data.message}`);
@@ -2439,6 +2780,9 @@ async function handleSubmitEditRequest() {
       showToast('Edit request submitted to Admin for review!', 'success');
       closeModal('modalEditRequest');
       loadAdminEditRequests();
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Submission Failed: ${data.message}`);
     }
@@ -2514,7 +2858,7 @@ function renderAdminEditRequestsTable(requests) {
       <td>
         <div class="diff-box new-box">
           <div class="diff-row"><span class="diff-label">Name:</span> <span class="diff-val ${nameChanged ? 'modified' : ''}">${newData.name || '-'} ${nameChanged ? '<span class="diff-badge-edit">UPDATED</span>' : ''}</span></div>
-          <div class="diff-row"><span class="diff-label">Phone:</span> <span class="diff-val ${phoneChanged ? 'modified' : ''}">${newData.phone || '-'} ${phoneChanged ? '<span class="diff-badge-edit">UPDATED</span>' : ''}</span></div>
+          <div class="diff-row"><span class="diff-label">Phone:</span> <span class="diff-val font-mono ${phoneChanged ? 'modified' : ''}">${newData.phone || '-'} ${phoneChanged ? '<span class="diff-badge-edit">UPDATED</span>' : ''}</span></div>
           <div class="diff-row"><span class="diff-label">Email:</span> <span class="diff-val ${emailChanged ? 'modified' : ''}">${newData.email || '-'} ${emailChanged ? '<span class="diff-badge-edit">UPDATED</span>' : ''}</span></div>
           <div class="diff-row"><span class="diff-label">College:</span> <span class="diff-val ${collegeChanged ? 'modified' : ''}">${newData.college || '-'} ${collegeChanged ? '<span class="diff-badge-edit">UPDATED</span>' : ''}</span></div>
         </div>
@@ -2589,6 +2933,9 @@ window.handleAdminRejectEditRequest = async function (requestId) {
       loadMasterApprovals();
       loadMasterAdminDashboard();
       loadAdminEditRequests();
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Rejection Failed: ${data.message}`);
     }
@@ -2671,6 +3018,9 @@ async function handleFreeFireSpotRegister() {
       openModal('modalFreeFireSuccess');
       document.getElementById('formFreeFireKiosk').reset();
       loadFreeFireTeams();
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Registration Failed: ${data.message}`);
     }
@@ -2943,6 +3293,9 @@ async function handleFormFfTeamFromSolo() {
       renderFfSelectedChips();
       loadUnassignedSoloPlayers();
       loadFreeFireTeams();
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Failed to form team: ${data.message}`);
     }
@@ -3258,6 +3611,9 @@ async function handleSaveEditFfTeam() {
       closeModal('modalEditFreeFireTeam');
       loadUnassignedSoloPlayers();
       loadFreeFireTeams();
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Update Failed: ${data.message}`);
     }
@@ -3805,12 +4161,15 @@ async function handleSubmitEventChangeRequest() {
       closeModal('modalEditParticipantEvents');
       loadEventIssueParticipants();
       loadAdminEventChangeRequests();
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Submission Failed: ${data.message}`);
     }
   } catch (err) {
     console.error('Error submitting event change request:', err);
-    showAlert('Server connection error. Please try again.', 'error');
+    showAlert('Server error submitting event change request.', 'error');
   } finally {
     btnSubmit.disabled = false;
     btnSubmit.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Submit Change Request to Admin`;
@@ -3943,6 +4302,9 @@ window.handleAdminApproveEventChangeRequest = async function (requestId) {
       if (typeof currentMasterSelectedEventId !== 'undefined' && currentMasterSelectedEventId) {
         loadMasterEventParticipants(currentMasterSelectedEventId);
       }
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Action Failed: ${data.message}`);
     }
@@ -3968,6 +4330,9 @@ window.handleAdminRejectEventChangeRequest = async function (requestId) {
       loadMasterAdminDashboard();
       loadAdminEventChangeRequests();
       loadEventIssueParticipants();
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Rejection Failed: ${data.message}`);
     }
@@ -4465,6 +4830,9 @@ window.handleMasterQuickAction = async function (studentId, actionType) {
     const data = await res.json();
     if (data.success) {
       loadMasterStudentDirectory();
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Action Failed: ${data.message}`);
     }
@@ -4819,6 +5187,9 @@ async function handleMasterFormFfTeam() {
       loadMasterUnassignedSoloPlayers();
       loadMasterFreeFireTeams();
       loadMasterAdminDashboard();
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Team formation failed: ${data.message}`);
     }
@@ -5512,6 +5883,9 @@ async function handleExecuteExcelImport() {
       if (currentCoordinatorEventId) {
         loadEventParticipants(currentCoordinatorEventId);
       }
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(data.message || 'Failed to import Excel sheet.');
     }
@@ -5817,6 +6191,9 @@ window.handleAssignFacultyClick = async function (counterId, counterName) {
       if (currentMasterActiveSubtab === 'counter-reg') {
         loadCounterReport();
       }
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Assignment Error: ${data.message}`);
     }
@@ -5842,6 +6219,9 @@ window.handleUnassignFacultyClick = async function (counterId, counterName) {
       await loadAdminCounters();
       if (currentMasterActiveSubtab === 'counter-reg') {
         loadCounterReport();
+      }
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
       }
     } else {
       showAlert(`Unassign Error: ${data.message}`);
@@ -6384,6 +6764,9 @@ async function handleSaveCredentials() {
       showAlert(`Success: Login credentials for "${moduleName}" have been updated!\n\nNew Login: ${username} / ${password}\n\nAny user accessing this event or desk must now use the new password immediately.`);
       closeModal('modalEditCredentials');
       await loadAdminCredentials();
+      if (typeof LiveSyncEngine !== 'undefined') {
+        LiveSyncEngine.triggerImmediateSync();
+      }
     } else {
       showAlert(`Failed to update credentials: ${data.message}`);
     }

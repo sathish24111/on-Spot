@@ -170,6 +170,73 @@ body.theme-vibrant {
   box-shadow: var(--shadow-sm);
 }
 
+/* Real-Time Live Auto-Sync Indicator Badge */
+.live-sync-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.8rem;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1.5px solid rgba(16, 185, 129, 0.35);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #065f46;
+  letter-spacing: 0.5px;
+  user-select: none;
+  align-self: center;
+  transition: all 0.3s ease;
+}
+
+.live-sync-indicator:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.6);
+  transform: translateY(-1px);
+}
+
+.live-sync-indicator.syncing {
+  border-color: #0284c7;
+  background: rgba(2, 132, 199, 0.08);
+  color: #0369a1;
+}
+
+.live-sync-indicator.syncing .pulse-dot {
+  background-color: #0284c7;
+  box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7);
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulseGreen 1.8s infinite cubic-bezier(0.66, 0, 0, 1);
+  display: inline-block;
+}
+
+@keyframes pulseGreen {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.sync-text {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 0.72rem;
+}
+
 .app-view-panel {
   display: none;
   flex: 1;
