@@ -22,6 +22,9 @@ load_dotenv()
 # ==========================================
 # CONFIGURATION & CONSTANTS
 # ==========================================
+import urllib.parse
+import ssl
+
 PORT = int(os.getenv('PORT', 3000))
 DB_HOST = os.getenv('DB_HOST', 'localhost')
 DB_PORT = int(os.getenv('DB_PORT', 3306))
@@ -29,6 +32,23 @@ DB_USER = os.getenv('DB_USER', 'root')
 DB_PASSWORD = os.getenv('DB_PASSWORD', '')
 DB_NAME = os.getenv('DB_NAME', 'event_spot_registration')
 DB_CONNECTION_LIMIT = int(os.getenv('DB_CONNECTION_LIMIT', 30))
+
+# Support Full Service URI / DATABASE_URL (e.g. from Aiven MySQL)
+DATABASE_URL = os.getenv('DATABASE_URL') or os.getenv('MYSQL_URL') or os.getenv('DB_URI')
+if DATABASE_URL:
+    try:
+        url = urllib.parse.urlparse(DATABASE_URL)
+        if url.hostname: DB_HOST = url.hostname
+        if url.port: DB_PORT = int(url.port)
+        if url.username: DB_USER = url.username
+        if url.password: DB_PASSWORD = url.password
+        if url.path and url.path.strip('/'): DB_NAME = url.path.strip('/')
+        print(f"[CONFIG] Parsed DATABASE_URL: Host={DB_HOST}, Port={DB_PORT}, User={DB_USER}, DB={DB_NAME}")
+    except Exception as parse_err:
+        print(f"[WARNING] Failed to parse DATABASE_URL: {parse_err}")
+
+# Auto-detect SSL requirement (Aiven Cloud or explicit flag)
+DB_SSL = os.getenv('DB_SSL', '').lower() in ('true', '1', 'yes', 'required') or ('aivencloud.com' in DB_HOST.lower())
 
 HACKATHON_THEMES = [
     'Intelligent Systems',
@@ -144,19 +164,34 @@ db_pool = None
 
 def init_db_pool():
     global db_pool
-    print(f"[INFO] Connecting to MySQL at {DB_HOST}:{DB_PORT} as '{DB_USER}'...")
+    print(f"[INFO] Connecting to MySQL at {DB_HOST}:{DB_PORT} as '{DB_USER}' (SSL={DB_SSL})...")
     
-    # 1. Create Database if needed
-    init_conn = pymysql.connect(
-        host=DB_HOST,
-        port=DB_PORT,
-        user=DB_USER,
-        password=DB_PASSWORD,
-        charset='utf8mb4'
-    )
-    with init_conn.cursor() as cur:
-        cur.execute(f"CREATE DATABASE IF NOT EXISTS `{DB_NAME}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
-    init_conn.close()
+    ssl_kwargs = {}
+    if DB_SSL:
+        try:
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            ssl_kwargs['ssl'] = ctx
+        except Exception as ssl_err:
+            print(f"[WARNING] SSL Context initialization: {ssl_err}")
+            ssl_kwargs['ssl'] = {'check_hostname': False}
+
+    # 1. Create Database if needed (safe for cloud databases)
+    try:
+        init_conn = pymysql.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            charset='utf8mb4',
+            **ssl_kwargs
+        )
+        with init_conn.cursor() as cur:
+            cur.execute(f"CREATE DATABASE IF NOT EXISTS `{DB_NAME}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+        init_conn.close()
+    except Exception as create_err:
+        print(f"[INFO] Database existence check: '{DB_NAME}' ({create_err})")
 
     # 2. Connection Pool
     db_pool = PooledDB(
@@ -172,9 +207,10 @@ def init_db_pool():
         database=DB_NAME,
         charset='utf8mb4',
         cursorclass=DictCursor,
-        autocommit=True
+        autocommit=True,
+        **ssl_kwargs
     )
-    print(f"[SUCCESS] Connected to MySQL Database: '{DB_NAME}' (Pool Size: {DB_CONNECTION_LIMIT})")
+    print(f"[SUCCESS] Connected to MySQL Database: '{DB_NAME}' (Pool Size: {DB_CONNECTION_LIMIT}, SSL={DB_SSL})")
     init_schema()
 
 def get_connection():
