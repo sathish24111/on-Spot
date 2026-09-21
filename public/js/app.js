@@ -344,6 +344,27 @@ const LiveSyncEngine = {
   },
 
   async syncCoordinatorView() {
+    const dashboardPanel = document.getElementById('adminPanelDashboard');
+    if (dashboardPanel && dashboardPanel.classList.contains('active')) {
+      try {
+        const [modRes, chgRes] = await Promise.all([
+          fetch('/api/admin/edit-requests'),
+          fetch('/api/coordinator/event-change-requests')
+        ]);
+        const modData = await modRes.json();
+        const chgData = await chgRes.json();
+        if (modData.success && this.hasChanged('coord_overview_mod_requests', modData.requests || [])) {
+          this.flashSyncIndicator();
+          renderAdminEditRequestsTable(modData.requests || []);
+        }
+        if (chgData.success && this.hasChanged('coord_overview_chg_requests', chgData.requests || [])) {
+          this.flashSyncIndicator();
+          renderAdminEventChangeRequestsTable(chgData.requests || []);
+        }
+      } catch (e) { }
+      return;
+    }
+
     if (!currentCoordinatorEventId) return;
 
     try {
@@ -1941,35 +1962,30 @@ function renderSidebarDynamicEvents() {
     container.appendChild(btn);
   });
 
-  // Also lock/unlock Dashboard Overview and Free Fire sidebar items if restricted
+  // Lock/unlock Free Fire sidebar items if restricted, while Dashboard Overview remains ENABLED
   const navOverview = document.getElementById('navAdminDashboard');
   const navFf = document.getElementById('navFreeFireDashboard');
 
+  // Dashboard Overview is always enabled for all logged in coordinators
+  if (navOverview) {
+    navOverview.classList.remove('sidebar-item-locked');
+    navOverview.removeAttribute('title');
+  }
+
   if (isRestrictedSingleEvent) {
     if (loggedInCoordinatorEventKey === 'd1_freefire') {
-      if (navOverview) {
-        navOverview.classList.add('sidebar-item-locked');
-        navOverview.title = 'Access restricted to Free Fire Esports Desk';
-      }
       if (navFf) {
         navFf.classList.remove('sidebar-item-locked');
         navFf.classList.add('sidebar-item-unlocked');
+        navFf.removeAttribute('title');
       }
     } else {
-      if (navOverview) {
-        navOverview.classList.add('sidebar-item-locked');
-        navOverview.title = `Access restricted to ${loggedInCoordinatorEventName}`;
-      }
       if (navFf) {
         navFf.classList.add('sidebar-item-locked');
         navFf.title = `Access restricted to ${loggedInCoordinatorEventName}`;
       }
     }
   } else {
-    if (navOverview) {
-      navOverview.classList.remove('sidebar-item-locked');
-      navOverview.removeAttribute('title');
-    }
     if (navFf) {
       navFf.classList.remove('sidebar-item-locked');
       navFf.removeAttribute('title');
@@ -2022,17 +2038,12 @@ function switchAdminPanel(panelType) {
   );
 
   if (isRestrictedSingleEvent) {
-    if (panelType === 'dashboard' && loggedInCoordinatorEventKey !== 'd1_freefire') {
-      showAlert(`🔒 You are logged in as Coordinator for "${loggedInCoordinatorEventName}".\nDirecting you to your event desk.`);
-      selectCoordinatorEvent(loggedInCoordinatorEventKey);
-      return;
-    }
     if (panelType === 'freefire' && loggedInCoordinatorEventKey !== 'd1_freefire') {
       showAlert(`🔒 Access Restricted:\nYou are assigned to "${loggedInCoordinatorEventName}". Free Fire Esports Desk is locked.`);
       return;
     }
     if (panelType === 'coordinator' && loggedInCoordinatorEventKey === 'd1_freefire') {
-      showAlert(`🔒 You are logged in as Free Fire Esports Coordinator.`);
+      showAlert(`🔒 Access Restricted:\nYou are logged in as Free Fire Esports Coordinator.`);
       return;
     }
   }
@@ -2041,8 +2052,12 @@ function switchAdminPanel(panelType) {
   document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
 
   if (panelType === 'dashboard') {
-    document.getElementById('adminPanelDashboard').classList.add('active');
-    document.getElementById('navAdminDashboard').classList.add('active');
+    currentCoordinatorEventId = null;
+    const p = document.getElementById('adminPanelDashboard');
+    if (p) p.classList.add('active');
+    const nav = document.getElementById('navAdminDashboard');
+    if (nav) nav.classList.add('active');
+    renderSidebarDynamicEvents();
     loadAdminEditRequests();
     loadAdminEventChangeRequests();
   } else if (panelType === 'eventIssue') {
