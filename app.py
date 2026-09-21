@@ -1871,17 +1871,25 @@ def extract_events_from_row(row_dict, default_event=None):
 @app.route('/api/admin/import/excel', methods=['POST'])
 def import_excel():
     try:
+        import_type = request.form.get('import_type') or request.args.get('type')
         file_bytes = None
         if 'file' in request.files and request.files['file'].filename:
             file_bytes = request.files['file'].read()
         else:
             data = request.get_json(silent=True) or {}
             b64 = data.get('fileData') or data.get('fileBase64')
+            if not import_type:
+                import_type = data.get('import_type')
             if b64:
                 import base64
                 if ',' in b64:
                     b64 = b64.split(',')[1]
                 file_bytes = base64.b64decode(b64)
+
+        if not import_type:
+            import_type = 'valid'
+        import_type = str(import_type).strip().lower()
+        is_invalid_mode = (import_type == 'invalid')
 
         if not file_bytes:
             return jsonify({'success': False, 'message': 'No Excel file uploaded or file is empty.'}), 400
@@ -1894,7 +1902,8 @@ def import_excel():
         existing_codes = set(str(r['reg_code']).strip().upper() for r in existing_codes_rows if r.get('reg_code'))
 
         idx_counter = [1]
-        def gen_code(prefix='ONLINE-2026'):
+        code_prefix = 'FLAGGED-2026' if is_invalid_mode else 'ONLINE-2026'
+        def gen_code(prefix=code_prefix):
             while True:
                 code = f"{prefix}-{str(idx_counter[0]).zfill(4)}"
                 idx_counter[0] += 1
@@ -2061,13 +2070,16 @@ def import_excel():
                         except:
                             fee = PRICING[day_sel]
 
-                        reg_type = 'SPOT' if re.search(r'spot', raw_source, re.IGNORECASE) else 'ONLINE'
+                        if is_invalid_mode:
+                            reg_type = 'ONLINE_INVALID'
+                        else:
+                            reg_type = 'SPOT' if re.search(r'spot', raw_source, re.IGNORECASE) else 'ONLINE'
                         food_val = 1 if re.search(r'yes|true|1', raw_food, re.IGNORECASE) else 0
                         tag_val = 1 if re.search(r'yes|true|1', raw_tag, re.IGNORECASE) else 0
 
                         final_reg_code = raw_code.upper() if raw_code else ''
                         if not final_reg_code or final_reg_code in existing_codes:
-                            final_reg_code = gen_code('SPOT-2026' if reg_type == 'SPOT' else 'ONLINE-2026')
+                            final_reg_code = gen_code('FLAGGED-2026' if is_invalid_mode else ('SPOT-2026' if reg_type == 'SPOT' else 'ONLINE-2026'))
                         else:
                             existing_codes.add(final_reg_code)
 
@@ -2080,6 +2092,17 @@ def import_excel():
                         s_id = cur.lastrowid
                         total_students += 1
                         total_revenue += fee
+
+                        if is_invalid_mode:
+                            try:
+                                old_str = json.dumps({'name': name, 'phone': phone, 'email': email, 'college': college, 'source': 'ONLINE_INVALID'})
+                                new_str = json.dumps({'status': 'Pending Verification', 'reason': 'Imported from Online Invalid Details list. Please verify data at desk.'})
+                                cur.execute(
+                                    "INSERT INTO edit_requests (student_id, coordinator_name, event_name, old_data, new_data, status) VALUES (%s, %s, %s, %s, %s, %s)",
+                                    (s_id, 'Online Import Desk', 'Invalid Online Record', old_str, new_str, 'Pending')
+                                )
+                            except Exception as er_err:
+                                pass
 
                         if reg_type == 'SPOT': total_spot += 1
                         else: total_online += 1

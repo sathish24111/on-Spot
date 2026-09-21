@@ -1195,9 +1195,13 @@
           <p>Full system control, real-time metrics, modification approvals, and data export center</p>
         </div>
         <div class="admin-topbar-actions">
-          <button type="button" id="btnAdminMasterImportExcel" class="btn-admin-top-action btn-import-gradient"
-            onclick="window.openImportExcelModal()">
-            <i class="fa-solid fa-file-arrow-up"></i> Import Excel
+          <button type="button" id="btnImportValidExcel" class="btn-admin-top-action btn-import-valid"
+            onclick="window.openImportExcelModal('valid')" title="Import verified and approved online registration details">
+            <i class="fa-solid fa-file-circle-check"></i> Import Online Valid Details
+          </button>
+          <button type="button" id="btnImportInvalidExcel" class="btn-admin-top-action btn-import-invalid"
+            onclick="window.openImportExcelModal('invalid')" title="Import online records with invalid/flagged data for Help Desk resolution">
+            <i class="fa-solid fa-file-circle-exclamation"></i> Import Online Invalid Details
           </button>
           <button id="btnAdminMasterRefresh" class="btn-admin-top-action btn-refresh-gradient">
             <i class="fa-solid fa-rotate"></i> Refresh Data
@@ -1329,11 +1333,12 @@
                 Clear</button>
             </div>
 
-            <!-- Source Filter (All / Online / Spot) -->
+            <!-- Source Filter (All / Online Valid / Online Invalid / Spot) -->
             <div class="filter-pill-group">
               <span class="filter-label">Source:</span>
               <button class="filter-pill-btn active" data-dir-source="all">All</button>
-              <button class="filter-pill-btn" data-dir-source="online"><i class="fa-solid fa-globe"></i> Online</button>
+              <button class="filter-pill-btn" data-dir-source="online"><i class="fa-solid fa-globe"></i> Online (Valid)</button>
+              <button class="filter-pill-btn" data-dir-source="online_invalid" style="color: #b45309;"><i class="fa-solid fa-triangle-exclamation"></i> Online (Invalid)</button>
               <button class="filter-pill-btn" data-dir-source="spot"><i class="fa-solid fa-bolt"></i> Spot</button>
             </div>
 
@@ -1712,6 +1717,44 @@
           </div>
 
           <div class="export-cards-grid">
+            <!-- Card A: Import Online Valid Details -->
+            <div class="export-card" style="border: 1.5px solid #10b981; background: #f0fdf4;">
+              <div class="export-card-icon" style="background: #d1fae5; color: #059669;">
+                <i class="fa-solid fa-file-circle-check"></i>
+              </div>
+              <div class="export-card-body">
+                <span class="badge-recommend" style="background: #059669; color: #fff;">IMPORT TOOL</span>
+                <h4>Import Online Valid Details (.xlsx)</h4>
+                <p>Upload verified online registration rosters. Automatically matches event names and enrolls participants into Day 1 & Day 2 desks.</p>
+                <div class="export-meta">Format: .xlsx / .xls / .csv (Auto-Split)</div>
+              </div>
+              <div class="export-card-action">
+                <button type="button" class="btn-export-primary" style="background: linear-gradient(135deg, #059669, #10b981); border: none; cursor: pointer; width: 100%;"
+                  onclick="window.openImportExcelModal('valid')">
+                  <i class="fa-solid fa-file-circle-check"></i> Upload Valid Online Registrations
+                </button>
+              </div>
+            </div>
+
+            <!-- Card B: Import Online Invalid Details -->
+            <div class="export-card" style="border: 1.5px solid #f87171; background: #fef2f2;">
+              <div class="export-card-icon" style="background: #fee2e2; color: #dc2626;">
+                <i class="fa-solid fa-file-circle-exclamation"></i>
+              </div>
+              <div class="export-card-body">
+                <span class="badge-recommend" style="background: #dc2626; color: #fff;">FLAGGED IMPORT</span>
+                <h4>Import Online Invalid Details (.xlsx)</h4>
+                <p>Upload online registrations with data anomalies, unverified payments, or incomplete fields. Tags them as ONLINE_INVALID for Help Desk resolution.</p>
+                <div class="export-meta">Format: .xlsx / .xls / .csv (Flagged Mode)</div>
+              </div>
+              <div class="export-card-action">
+                <button type="button" class="btn-export-primary" style="background: linear-gradient(135deg, #d97706, #ef4444); border: none; cursor: pointer; width: 100%;"
+                  onclick="window.openImportExcelModal('invalid')">
+                  <i class="fa-solid fa-file-circle-exclamation"></i> Upload Invalid / Flagged Details
+                </button>
+              </div>
+            </div>
+
             <!-- Card 1: Master All-In-One Excel Workbook -->
             <div class="export-card featured">
               <div class="export-card-icon" style="background: #ecfdf5; color: #059669;">
@@ -2454,16 +2497,16 @@
   <div class="modal-overlay" id="modalImportExcel">
     <div class="modal-content"
       style="max-width: 680px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
-      <div class="modal-header"
-        style="background: linear-gradient(135deg, #065f46, #047857); color: #fff; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="color: #fff; margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 0.6rem;">
-          <i class="fa-solid fa-file-excel" style="color: #6ee7b7;"></i> Import Excel Registrations & Event Split
+      <div class="modal-header" id="modalImportExcelHeader"
+        style="background: linear-gradient(135deg, #065f46, #047857); color: #fff; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s ease;">
+        <h3 id="modalImportExcelTitle" style="color: #fff; margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 0.6rem;">
+          <i class="fa-solid fa-file-circle-check" id="modalImportExcelIcon" style="color: #6ee7b7;"></i> Import Online Valid Details
         </h3>
         <button class="close-btn" id="closeImportExcelModal"
           style="color: #a7f3d0; background: none; border: none; font-size: 1.6rem; cursor: pointer;">&times;</button>
       </div>
       <div class="modal-body" style="padding: 1.5rem;">
-        <p style="font-size: 0.9rem; color: #475569; margin-bottom: 1.25rem; line-height: 1.5;">
+        <p id="modalImportExcelDesc" style="font-size: 0.9rem; color: #475569; margin-bottom: 1.25rem; line-height: 1.5;">
           Upload your Excel spreadsheet (<code>.xlsx</code>, <code>.xls</code>, or <code>.csv</code>). The engine will
           automatically match participant records, parse registered events, and split participants into their respective
           Day 1 & Day 2 events in real time.
@@ -2474,9 +2517,9 @@
           style="border: 2px dashed #10b981; background: #ecfdf5; border-radius: 14px; padding: 2.25rem 1.5rem; text-align: center; cursor: pointer; transition: all 0.2s ease;">
           <input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv" style="display: none;">
           <div id="dropzoneDefaultState">
-            <i class="fa-solid fa-cloud-arrow-up"
+            <i class="fa-solid fa-cloud-arrow-up" id="dropzoneIcon"
               style="font-size: 3rem; color: #059669; margin-bottom: 0.75rem; display: block;"></i>
-            <h4 style="color: #064e3b; margin: 0 0 0.35rem 0; font-weight: 800; font-size: 1.1rem;">Click to browse or
+            <h4 id="dropzoneHeading" style="color: #064e3b; margin: 0 0 0.35rem 0; font-weight: 800; font-size: 1.1rem;">Click to browse or
               Drag & Drop Excel File here</h4>
             <span style="font-size: 0.8rem; color: #047857; font-weight: 600;">Supports .xlsx, .xls, .csv files up to
               50MB</span>
@@ -2484,7 +2527,7 @@
           <div id="dropzoneSelectedState" style="display: none;">
             <div
               style="display: inline-flex; align-items: center; gap: 0.75rem; background: #fff; border: 1.5px solid #10b981; border-radius: 10px; padding: 0.75rem 1.25rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);">
-              <i class="fa-solid fa-file-excel" style="font-size: 2rem; color: #059669;"></i>
+              <i class="fa-solid fa-file-excel" id="selectedFileIcon" style="font-size: 2rem; color: #059669;"></i>
               <div style="text-align: left;">
                 <strong id="selectedFileName"
                   style="color: #064e3b; font-size: 0.95rem; display: block;">File.xlsx</strong>
@@ -2512,7 +2555,7 @@
         <div id="importProgressBarContainer" style="display: none; margin-top: 1.25rem;">
           <div
             style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: #064e3b; margin-bottom: 0.4rem;">
-            <span>Importing and splitting participant events...</span>
+            <span id="importProgressLabel">Importing and splitting participant events...</span>
             <span id="importProgressPercent">Processing...</span>
           </div>
           <div style="width: 100%; height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden;">
@@ -2530,7 +2573,7 @@
         <button type="button" class="btn-confirm" id="btnSubmitExcelImport"
           style="background: linear-gradient(135deg, #059669, #10b981); color: #fff; font-weight: 800; padding: 0.75rem 1.75rem; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);"
           disabled>
-          <i class="fa-solid fa-file-import"></i> Upload & Split Events
+          <span id="btnSubmitExcelImportText"><i class="fa-solid fa-file-import"></i> Upload & Split Events</span>
         </button>
       </div>
     </div>

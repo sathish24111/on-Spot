@@ -4314,7 +4314,16 @@ function filterMasterDirectoryTable() {
   const filtered = currentMasterStudents.filter(st => {
     // Source filter
     if (source !== 'all') {
-      if ((st.registration_type || 'ONLINE').toLowerCase() !== source.toLowerCase()) return false;
+      const regType = (st.registration_type || 'ONLINE').toLowerCase();
+      if (source === 'online') {
+        if (regType !== 'online') return false;
+      } else if (source === 'online_invalid') {
+        if (regType !== 'online_invalid' && !regType.includes('invalid')) return false;
+      } else if (source === 'spot') {
+        if (regType !== 'spot') return false;
+      } else {
+        if (regType !== source.toLowerCase()) return false;
+      }
     }
     // Pass filter
     if (pass !== 'all') {
@@ -4355,10 +4364,15 @@ function renderMasterDirectoryTable(students) {
   students.forEach((st, idx) => {
     const tr = document.createElement('tr');
 
-    const isOnline = (st.registration_type || 'ONLINE') === 'ONLINE';
-    const sourceBadge = isOnline
-      ? `<span class="evt-theme-badge" style="background:#eff6ff; color:#0284c7; border-color:#bfdbfe;"><i class="fa-solid fa-globe"></i> ONLINE</span>`
-      : `<span class="evt-theme-badge" style="background:#f5f3ff; color:#7c3aed; border-color:#ddd6fe;"><i class="fa-solid fa-bolt"></i> SPOT</span>`;
+    const regType = (st.registration_type || 'ONLINE').toUpperCase();
+    let sourceBadge = '';
+    if (regType === 'ONLINE_INVALID' || regType.includes('INVALID')) {
+      sourceBadge = `<span class="badge-source-online-invalid" title="Imported as invalid/flagged record - Pending desk verification"><i class="fa-solid fa-triangle-exclamation"></i> ONLINE (INVALID)</span>`;
+    } else if (regType === 'ONLINE') {
+      sourceBadge = `<span class="evt-theme-badge" style="background:#eff6ff; color:#0284c7; border-color:#bfdbfe;"><i class="fa-solid fa-globe"></i> ONLINE (VALID)</span>`;
+    } else {
+      sourceBadge = `<span class="evt-theme-badge" style="background:#f5f3ff; color:#7c3aed; border-color:#ddd6fe;"><i class="fa-solid fa-bolt"></i> SPOT</span>`;
+    }
 
     let passLabel = 'Day 1';
     let passClass = 'd1';
@@ -5375,6 +5389,8 @@ function handleFileSelection(file) {
   }
 }
 
+let currentExcelImportMode = 'valid';
+
 function resetDropzone() {
   selectedImportFile = null;
   const fileInput = document.getElementById('excelFileInput');
@@ -5391,12 +5407,65 @@ function resetDropzone() {
   if (btnSubmit) {
     btnSubmit.disabled = true;
     btnSubmit.style.opacity = '0.6';
-    btnSubmit.innerHTML = `<i class="fa-solid fa-file-import"></i> Upload & Split Events`;
+    if (currentExcelImportMode === 'invalid') {
+      btnSubmit.innerHTML = `<i class="fa-solid fa-file-circle-exclamation"></i> Import Invalid / Flagged Records`;
+    } else {
+      btnSubmit.innerHTML = `<i class="fa-solid fa-file-circle-check"></i> Import Valid Online Records`;
+    }
   }
 }
 
-window.openImportExcelModal = function () {
+window.openImportExcelModal = function (mode = 'valid') {
+  currentExcelImportMode = (mode === 'invalid') ? 'invalid' : 'valid';
   resetDropzone();
+
+  const modalHeader = document.getElementById('modalImportExcelHeader');
+  const modalTitle = document.getElementById('modalImportExcelTitle');
+  const modalDesc = document.getElementById('modalImportExcelDesc');
+  const dropzone = document.getElementById('excelDropzone');
+  const dropzoneIcon = document.getElementById('dropzoneIcon');
+  const dropzoneHeading = document.getElementById('dropzoneHeading');
+  const btnSubmit = document.getElementById('btnSubmitExcelImport');
+  const progressLabel = document.getElementById('importProgressLabel');
+
+  if (currentExcelImportMode === 'invalid') {
+    if (modalHeader) modalHeader.style.background = 'linear-gradient(135deg, #7f1d1d, #b91c1c)';
+    if (modalTitle) modalTitle.innerHTML = '<i class="fa-solid fa-file-circle-exclamation" style="color: #fca5a5;"></i> Import Online Invalid Details';
+    if (modalDesc) modalDesc.innerHTML = 'Upload online registration records with <strong>invalid / incomplete details, payment discrepancies, or missing phone numbers</strong>. These records will be tagged as <code style="color:#dc2626; font-weight:800;">ONLINE_INVALID</code> and made accessible in the Master Directory & Event Issue Desk for spot resolution.';
+    if (dropzone) {
+      dropzone.style.borderColor = '#ef4444';
+      dropzone.style.background = '#fef2f2';
+    }
+    if (dropzoneIcon) {
+      dropzoneIcon.style.color = '#dc2626';
+      dropzoneIcon.className = 'fa-solid fa-file-circle-exclamation';
+    }
+    if (dropzoneHeading) dropzoneHeading.textContent = 'Click to browse or Drag & Drop Invalid Excel File';
+    if (btnSubmit) {
+      btnSubmit.style.background = 'linear-gradient(135deg, #d97706, #ef4444)';
+      btnSubmit.innerHTML = `<i class="fa-solid fa-file-circle-exclamation"></i> Import Invalid / Flagged Records`;
+    }
+    if (progressLabel) progressLabel.textContent = 'Importing and tagging invalid online records...';
+  } else {
+    if (modalHeader) modalHeader.style.background = 'linear-gradient(135deg, #065f46, #047857)';
+    if (modalTitle) modalTitle.innerHTML = '<i class="fa-solid fa-file-circle-check" style="color: #6ee7b7;"></i> Import Online Valid Details';
+    if (modalDesc) modalDesc.innerHTML = 'Upload verified and approved online registrations (<code>.xlsx</code>, <code>.xls</code>, or <code>.csv</code>). The engine will match participant records, parse registered events, and split participants into their respective Day 1 & Day 2 events in real time.';
+    if (dropzone) {
+      dropzone.style.borderColor = '#10b981';
+      dropzone.style.background = '#ecfdf5';
+    }
+    if (dropzoneIcon) {
+      dropzoneIcon.style.color = '#059669';
+      dropzoneIcon.className = 'fa-solid fa-cloud-arrow-up';
+    }
+    if (dropzoneHeading) dropzoneHeading.textContent = 'Click to browse or Drag & Drop Valid Excel File here';
+    if (btnSubmit) {
+      btnSubmit.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+      btnSubmit.innerHTML = `<i class="fa-solid fa-file-circle-check"></i> Import Valid Online Records`;
+    }
+    if (progressLabel) progressLabel.textContent = 'Importing and splitting participant events...';
+  }
+
   openModal('modalImportExcel');
 };
 
@@ -5418,6 +5487,7 @@ async function handleExecuteExcelImport() {
   try {
     const formData = new FormData();
     formData.append('file', selectedImportFile);
+    formData.append('import_type', currentExcelImportMode);
 
     const res = await fetch('/api/admin/import/excel', {
       method: 'POST',
