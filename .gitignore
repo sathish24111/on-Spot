@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+.pytest_cache/
+venv/
+env/
+.venv/
+
+# Environment Variables
+.env
+
+# Scratch and Temporary files
+scratch/
+*.log
+*.tmp
+
+# SQLite DB (if any)
+*.db
+*.db-shm
+*.db-wal
+
+# OS generated files
+.DS_Store
+Thumbs.db

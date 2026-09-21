@@ -1,0 +1,2790 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Fest Spot Registration & Gate Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="theme-vibrant">
+
+  <!-- ========================================== -->
+  <!-- MAIN HEADER NAVIGATION WITH 3 MODULES     -->
+  <!-- ========================================== -->
+  <header class="main-app-header">
+    <div class="header-container">
+      <div class="brand-badge" id="brandHeaderLogo" style="cursor: pointer;" title="Return to Home Screen">
+        <div class="brand-text">
+          <span class="brand-title" id="headerBrandTitle">TechRaga '26</span>
+          <span class="brand-sub" id="headerBrandSub">KPR College of Arts Science and Research</span>
+        </div>
+      </div>
+
+      <!-- Main Navigation Tabs (6 Modules) -->
+      <nav class="main-nav">
+        <button class="nav-tab-btn active" id="tabNavHome" data-target="viewHome">
+          <i class="fa-solid fa-house"></i> Home
+        </button>
+        <button class="nav-tab-btn" id="tabNavKiosk" data-target="viewKiosk">
+          <i class="fa-solid fa-pen-to-square"></i> Spot Registration
+        </button>
+        <button class="nav-tab-btn" id="tabNavEventIssue" data-target="viewEventIssue">
+          <i class="fa-solid fa-triangle-exclamation" style="color: #d97706;"></i> Event Issue Management
+        </button>
+        <button class="nav-tab-btn" id="tabNavDay2Search" data-target="viewDay2Search">
+          <i class="fa-solid fa-magnifying-glass"></i> Day 2 Gate Search
+        </button>
+        <button class="nav-tab-btn" id="tabNavCoordinator" data-target="viewCoordinatorLogin">
+          <i class="fa-solid fa-user-shield"></i> Coordinator Portal
+        </button>
+        <button class="nav-tab-btn" id="tabNavAdminMaster" data-target="viewAdminMaster"
+          style="background: linear-gradient(135deg, #1e0b36, #3b146e); color: #f59e0b; border: 1.5px solid #f59e0b; font-weight: 800;">
+          <i class="fa-solid fa-crown" style="color: #f59e0b;"></i> Admin Master Portal
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- MODULE 0: TECHRAGA '26 MAIN HOME SCREEN     -->
+  <!-- ========================================== -->
+  <main class="app-view-panel active" id="viewHome">
+    <div class="home-container">
+
+      <!-- OFFICIAL FEST BANNER IMAGE -->
+      <div class="home-banner-wrapper">
+        <img src="images/techraga_banner.png" alt="TechRaga '26 - KPR College of Arts Science and Research"
+          class="home-banner-img">
+      </div>
+
+      <!-- HERO BANNER -->
+      <div class="home-hero-card">
+        <div class="hero-content">
+          <div class="hero-top-badge">
+            <span class="hero-live-dot"></span>
+            <i class="fa-solid fa-sparkles"></i> TECHRAGA '26 • OFFICIAL FEST & GATE PORTAL
+          </div>
+          <h1 class="hero-main-title">
+            Welcome to <span class="text-gradient">TechRaga '26</span>
+          </h1>
+          <p class="hero-college-name">
+            <i class="fa-solid fa-building-columns"></i> KPR College of Arts Science and Research
+          </p>
+          <p class="hero-description">
+            National Level Inter-Collegiate Technical & Cultural Fest. Access instant spot registrations, Free Fire
+            tournament squad enrollment, coordinator event desks, and real-time gate verification.
+          </p>
+
+          <div class="hero-actions-row">
+            <button type="button" class="btn-hero-cta btn-hero-spot" id="btnHeroSpotRegister">
+              <i class="fa-solid fa-pen-to-square"></i> Spot Registration <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button type="button" class="btn-hero-secondary" id="btnHeroGateSearch">
+              <i class="fa-solid fa-magnifying-glass"></i> Day 2 Gate Search
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-stats-banner">
+          <div class="hero-stat-box">
+            <div class="stat-num"><i class="fa-solid fa-trophy" style="color:#f59e0b;"></i> 21+</div>
+            <div class="stat-label">Fest Events</div>
+          </div>
+          <div class="hero-stat-box">
+            <div class="stat-num"><i class="fa-solid fa-ticket" style="color:#0284c7;"></i> ₹250 / ₹350</div>
+            <div class="stat-label">Day & Both Passes</div>
+          </div>
+          <div class="hero-stat-box">
+            <div class="stat-num"><i class="fa-solid fa-gamepad" style="color:#dc2626;"></i> ₹400</div>
+            <div class="stat-label">Free Fire Squad</div>
+          </div>
+          <div class="hero-stat-box">
+            <div class="stat-num"><i class="fa-solid fa-utensils" style="color:#059669;"></i> Food & Tags</div>
+            <div class="stat-label">Complimentary Tokens</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PORTAL NAVIGATION CARDS (QUICK ACCESS) -->
+      <div class="home-section-header">
+        <div>
+          <h2><i class="fa-solid fa-grid-2"></i> Fast Portal Access</h2>
+          <p>Direct entry into all gate operations, event coordination desks, and admin management</p>
+        </div>
+      </div>
+
+      <div class="home-portals-grid">
+
+        <!-- CARD 1: SPOT REGISTRATION (Featured) -->
+        <div class="home-portal-card card-spot" id="homeCardSpot">
+          <div class="portal-card-top">
+            <div class="portal-icon-box icon-spot">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            <span class="portal-badge badge-spot"><i class="fa-solid fa-bolt"></i> Fast Desk</span>
+          </div>
+          <h3 class="portal-title">Spot Registration</h3>
+          <p class="portal-desc">New participant on-desk spot registration for general fest events (Day 1/2/Both) and
+            dedicated Free Fire 4-player team squad passes.</p>
+          <div class="portal-card-action">
+            <span class="action-link">Launch Spot Registration <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+        <!-- CARD 2: EVENT ISSUE MANAGEMENT -->
+        <div class="home-portal-card card-issue" id="homeCardIssue">
+          <div class="portal-card-top">
+            <div class="portal-icon-box icon-issue">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <span class="portal-badge badge-issue"><i class="fa-solid fa-circle-question"></i> Help Desk</span>
+          </div>
+          <h3 class="portal-title">Event Issue Management</h3>
+          <p class="portal-desc">Search registered participants, verify their chosen events, and submit event
+            replacement/change requests for instant admin review.</p>
+          <div class="portal-card-action">
+            <span class="action-link">Open Issue Management <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+        <!-- CARD 3: DAY 2 GATE SEARCH -->
+        <div class="home-portal-card card-gate" id="homeCardGate">
+          <div class="portal-card-top">
+            <div class="portal-icon-box icon-gate">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <span class="portal-badge badge-gate"><i class="fa-solid fa-shield-check"></i> Gate Entry</span>
+          </div>
+          <h3 class="portal-title">Day 2 Gate Search</h3>
+          <p class="portal-desc">Fast search for returning participants on Day 2. Verify pass legitimacy and ensure
+            proper Day 2 food token & ID tag distribution.</p>
+          <div class="portal-card-action">
+            <span class="action-link">Open Gate Verification <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+        <!-- CARD 4: COORDINATOR PORTAL -->
+        <div class="home-portal-card card-coord" id="homeCardCoord">
+          <div class="portal-card-top">
+            <div class="portal-icon-box icon-coord">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <span class="portal-badge badge-coord"><i class="fa-solid fa-lock"></i> Secured</span>
+          </div>
+          <h3 class="portal-title">Coordinator Portal</h3>
+          <p class="portal-desc">Individual event desk access for student coordinators to verify entries, mark
+            attendance, issue food tokens, and update profile requests.</p>
+          <div class="portal-card-action">
+            <span class="action-link">Coordinator Login <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+        <!-- CARD 5: ADMIN MASTER PORTAL -->
+        <div class="home-portal-card card-admin" id="homeCardAdmin">
+          <div class="portal-card-top">
+            <div class="portal-icon-box icon-admin">
+              <i class="fa-solid fa-crown"></i>
+            </div>
+            <span class="portal-badge badge-admin"><i class="fa-solid fa-star"></i> Master Control</span>
+          </div>
+          <h3 class="portal-title">Admin Master Portal</h3>
+          <p class="portal-desc">Live registration metrics, Master Student Directory, Proceed/Reject approvals desk,
+            Free Fire tournament management, and Multi-Sheet Excel exports.</p>
+          <div class="portal-card-action">
+            <span class="action-link">Open Master Admin <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODULE 1: STUDENT SPOT REGISTRATION KIOSK  -->
+  <!-- ========================================== -->
+  <main class="app-view-panel" id="viewKiosk">
+    <div class="kiosk-container">
+      <div class="kiosk-banner">
+        <div class="banner-badge"><i class="fa-solid fa-sparkles"></i> SPOT REGISTRATION</div>
+        <h2 class="blink-heading" id="kioskBannerHeading">Student Spot Registration</h2>
+        <p id="kioskBannerSub">Select your registration track below to get started</p>
+      </div>
+
+      <!-- SPOT SELECTION HUB: TWO CLEAR OPTIONS -->
+      <div class="spot-choice-hub" id="spotChoiceHub">
+        <div class="spot-choice-grid">
+
+          <!-- OPTION 1: REGISTER (General Event Spot Registration) -->
+          <div class="spot-choice-card card-general" id="cardSelectGeneral">
+            <div class="choice-card-header">
+              <div class="choice-icon-wrap general-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
+              </div>
+              <div class="choice-badge general-badge">
+                <i class="fa-solid fa-calendar-days"></i> Day 1 / Day 2 / Both
+              </div>
+            </div>
+
+            <div class="choice-body">
+              <h3 class="choice-title">General Event Registration</h3>
+              <p class="choice-desc">Register for technical & non-technical fest events including Quiz, Paper
+                Presentation, Webforge, Shark Tank, Adzap, Hackathon & more.</p>
+
+              <ul class="choice-feature-list">
+                <li><i class="fa-solid fa-circle-check"></i> Single Day (₹250) or Both Days (₹350) Pass</li>
+                <li><i class="fa-solid fa-circle-check"></i> Select up to 2 events per day</li>
+                <li><i class="fa-solid fa-circle-check"></i> Free Food Token & Student ID Tag</li>
+                <li><i class="fa-solid fa-circle-check"></i> Instant Gate Entry Code Generation</li>
+              </ul>
+            </div>
+
+            <div class="choice-footer">
+              <button type="button" class="btn-spot-choice btn-choice-general" id="btnSelectGeneralRegister">
+                <span>REGISTER</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- OPTION 2: FREE FIRE REGISTER (Esports Tournament) -->
+          <div class="spot-choice-card card-freefire" id="cardSelectFreeFire">
+            <div class="choice-card-header">
+              <div class="choice-icon-wrap ff-icon">
+                <i class="fa-solid fa-gamepad"></i>
+              </div>
+              <div class="choice-badge ff-badge">
+                <i class="fa-solid fa-fire-flame-curved"></i> Esports Tournament
+              </div>
+            </div>
+
+            <div class="choice-body">
+              <h3 class="choice-title">Free Fire Registration</h3>
+              <p class="choice-desc">Register your full 4-player squad for the dedicated Free Fire Battle Royale
+                Tournament and secure your team slot.</p>
+
+              <ul class="choice-feature-list">
+                <li><i class="fa-solid fa-circle-check"></i> Full 4-Player Team Registration (1 Captain + 3 Members)
+                </li>
+                <li><i class="fa-solid fa-circle-check"></i> Dedicated Squad Tournament Entry Ticket</li>
+                <li><i class="fa-solid fa-circle-check"></i> Unique Team Code & Roster Assignment</li>
+                <li><i class="fa-solid fa-circle-check"></i> Fixed Entry Fee: ₹400 per 4-Player Squad</li>
+              </ul>
+            </div>
+
+            <div class="choice-footer">
+              <button type="button" class="btn-spot-choice btn-choice-freefire" id="btnSelectFreeFireRegister">
+                <span>FREE FIRE REGISTER</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- STEP 2A: GENERAL REGISTRATION FORM CONTAINER -->
+      <div id="generalRegistrationFormContainer" style="display: none;">
+        <div class="spot-form-nav-bar">
+          <button type="button" class="btn-back-hub" id="btnBackToSpotHub">
+            <i class="fa-solid fa-arrow-left"></i> Back to Spot Registration
+          </button>
+          <div class="spot-form-nav-pill">
+            <i class="fa-solid fa-graduation-cap" style="color: #0284c7;"></i> General Event Registration Form
+          </div>
+        </div>
+
+        <!-- NEW WIZARD PROGRESS BAR -->
+        <div class="wizard-progress-bar">
+          <div class="wizard-step active" id="wiz-step-1">
+            <div class="step-circle">1</div>
+            <div class="step-label">Student Info</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="wizard-step" id="wiz-step-2">
+            <div class="step-circle">2</div>
+            <div class="step-label">Pass Selection</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="wizard-step" id="wiz-step-3">
+            <div class="step-circle">3</div>
+            <div class="step-label">Choose Events</div>
+          </div>
+        </div>
+
+        <!-- COUNTER OPERATOR DESK STATION BAR -->
+        <div class="spot-counter-desk-bar">
+          <div class="counter-badge-info">
+            <div class="counter-icon-wrap"><i class="fa-solid fa-headset"></i></div>
+            <div>
+              <div class="counter-sub-title">ON-SPOT REGISTRATION STATION</div>
+              <div class="counter-main-name" id="spotGeneralActiveCounterDisplay">Counter 1 • Dr. Kumar</div>
+            </div>
+          </div>
+          <div class="counter-select-group">
+            <label for="spotGeneralActiveCounterSelect"><i class="fa-solid fa-sliders"></i> Station:</label>
+            <select id="spotGeneralActiveCounterSelect" class="spot-station-select"
+              title="Select your active registration counter">
+              <option value="Counter 1">Counter 1</option>
+              <option value="Counter 2">Counter 2</option>
+              <option value="Counter 3">Counter 3</option>
+              <option value="Counter 4">Counter 4</option>
+              <option value="Counter 5">Counter 5</option>
+              <option value="Counter 6">Counter 6</option>
+              <option value="Counter 7">Counter 7</option>
+              <option value="Counter 8">Counter 8</option>
+              <option value="Counter 9">Counter 9</option>
+              <option value="Counter 10">Counter 10</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- WIZARD LAYOUT WRAPPER -->
+        <div class="wizard-layout">
+          <!-- LEFT COL: FORMS -->
+          <div class="wizard-left-col">
+            <form id="registrationForm" onsubmit="return false;" class="registration-card">
+
+              <!-- WIZARD STEP 1 CONTENT -->
+              <div class="wizard-content-block" id="wiz-content-1">
+                <div class="block-title"><i class="fa-solid fa-user"></i> Student Information</div>
+                <div class="input-grid">
+                  <div class="field-group">
+                    <label for="studentName"><i class="fa-solid fa-user"></i> Full Name <span
+                        class="req">*</span></label>
+                    <input type="text" id="studentName" placeholder="e.g. Rahul Sharma" required>
+                  </div>
+                  <div class="field-group">
+                    <label for="studentPhone"><i class="fa-solid fa-phone"></i> Phone Number <span
+                        class="req">*</span></label>
+                    <input type="tel" id="studentPhone" placeholder="10-digit mobile number" maxlength="10" required>
+                  </div>
+                  <div class="field-group">
+                    <label for="studentEmail"><i class="fa-solid fa-envelope"></i> Email Address <span
+                        class="req">*</span></label>
+                    <input type="email" id="studentEmail" placeholder="e.g. rahul@example.com" required>
+                  </div>
+                  <!-- Full Width Long College Name Input Field -->
+                  <div class="field-group full-width">
+                    <label for="studentCollege"><i class="fa-solid fa-building-columns"></i> College Name <span
+                        class="req">*</span></label>
+                    <input type="text" id="studentCollege"
+                      placeholder="Enter full college / institute name (e.g. Sri Venkateswara College of Engineering and Technology)"
+                      required>
+                  </div>
+                </div>
+                <div class="wizard-actions right-align">
+                  <button type="button" class="btn-wizard-next" onclick="window.goToWizardStep(2)">Proceed to Pass
+                    Selection <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+              </div>
+
+              <!-- WIZARD STEP 2 CONTENT -->
+              <div class="wizard-content-block" id="wiz-content-2" style="display:none;">
+                <div class="block-title"><i class="fa-solid fa-calendar-days"></i> Select Participation Days</div>
+                <div class="day-cards-grid">
+                  <label class="day-option-card selected" id="label-day1">
+                    <input type="radio" name="daySelection" value="day1" checked>
+                    <div class="card-body">
+                      <div class="day-header-row">
+                        <div class="day-name">Day 1</div>
+                        <i class="fa-solid fa-circle-check check-indicator"></i>
+                      </div>
+                      <div class="day-desc">Choose up to 2 Day 1 events</div>
+                    </div>
+                  </label>
+                  <label class="day-option-card" id="label-day2">
+                    <input type="radio" name="daySelection" value="day2">
+                    <div class="card-body">
+                      <div class="day-header-row">
+                        <div class="day-name">Day 2</div>
+                        <i class="fa-solid fa-circle-check check-indicator"></i>
+                      </div>
+                      <div class="day-desc">Choose up to 2 Day 2 events</div>
+                    </div>
+                  </label>
+                  <label class="day-option-card" id="label-both">
+                    <input type="radio" name="daySelection" value="both">
+                    <div class="card-body">
+                      <div class="day-header-row">
+                        <div class="day-name">Both (Day 1 & 2)</div>
+                        <i class="fa-solid fa-circle-check check-indicator"></i>
+                      </div>
+                      <div class="day-desc">Max 4 events (2 Day 1 + 2 Day 2)</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="wizard-actions space-between">
+                  <button type="button" class="btn-wizard-back" onclick="window.goToWizardStep(1)"><i
+                      class="fa-solid fa-arrow-left"></i> Back</button>
+                  <button type="button" class="btn-wizard-next" onclick="window.goToWizardStep(3)">Proceed to Choose
+                    Events <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+              </div>
+
+              <!-- WIZARD STEP 3 CONTENT -->
+              <div class="wizard-content-block" id="wiz-content-3" style="display:none;">
+                <div class="block-title-row">
+                  <div class="block-title"><i class="fa-solid fa-ticket"></i> Choose Events</div>
+                </div>
+
+                <div class="standalone-notice" id="standaloneRuleAlert">
+                  <i class="fa-solid fa-gamepad"></i>
+                  <span>Free Fire Tournament is a standalone event. Selecting Free Fire locks other events.</span>
+                </div>
+
+                <!-- Day 1 Events Block -->
+                <div class="events-day-section" id="block-day1-events">
+                  <div class="section-header">
+                    <span class="day-tag d1"><i class="fa-solid fa-calendar-day"></i> Day 1 Events</span>
+                    <span class="count-pill" id="counter-day1">Selected: 0 / 2</span>
+                  </div>
+                  <div class="events-grid" id="grid-day1-events"></div>
+                </div>
+
+                <!-- Day 2 Events Block -->
+                <div class="events-day-section" id="block-day2-events" style="display: none;">
+                  <div class="section-header">
+                    <span class="day-tag d2"><i class="fa-solid fa-calendar-days"></i> Day 2 Events</span>
+                    <span class="count-pill" id="counter-day2">Selected: 0 / 2</span>
+                  </div>
+                  <div class="events-grid" id="grid-day2-events"></div>
+                </div>
+
+                <div class="wizard-actions space-between">
+                  <button type="button" class="btn-wizard-back" onclick="window.goToWizardStep(2)"><i
+                      class="fa-solid fa-arrow-left"></i> Back</button>
+                  <button type="button" id="btnFinalSubmitRegistration" class="btn-wizard-submit">
+                    <i class="fa-solid fa-check-circle"></i> Confirm & Register
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <!-- SUCCESS MESSAGE CONTAINER (Hidden by default) -->
+            <div id="registrationSuccessMessage" style="display: none;" class="registration-card success-card">
+              <div class="success-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
+              <h3>Registration Successful!</h3>
+              <p>The participant has been successfully registered.</p>
+              <div class="success-details" id="successDetailsBox"></div>
+              <button type="button" class="btn-wizard-next" onclick="window.resetWizardAndStartNew()">Start New
+                Registration</button>
+            </div>
+          </div>
+
+          <!-- RIGHT COL: ORDER SUMMARY -->
+          <div class="wizard-right-col" id="wizardOrderSummaryCol">
+            <div class="order-summary-card">
+              <h3>Order Summary</h3>
+
+              <div class="summary-section">
+                <div class="summary-label">Student Details</div>
+                <div class="summary-value" id="summaryName">--</div>
+                <div class="summary-value-sub" id="summaryPhone">--</div>
+              </div>
+
+              <div class="summary-section">
+                <div class="summary-label">Selected Pass</div>
+                <div class="summary-value" id="summaryPassType">Day 1 Pass</div>
+              </div>
+
+              <div class="summary-section">
+                <div class="summary-label">Selected Events (<span id="summaryEventsCount">0</span>)</div>
+                <ul class="summary-events-list" id="summaryEventsList">
+                  <li class="empty-events">No events selected yet</li>
+                </ul>
+              </div>
+
+              <div class="summary-total-row">
+                <div class="total-label">Total Amount</div>
+                <div class="total-amount" id="summaryTotalAmount">₹250</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODULE 2: EVENT ISSUE MANAGEMENT DESK      -->
+  <!-- ========================================== -->
+  <main class="app-view-panel" id="viewEventIssue">
+    <div class="kiosk-container" style="max-width: 1140px;">
+      <div class="kiosk-banner">
+        <div class="banner-badge" style="background: rgba(217, 119, 6, 0.12); color: #d97706;"><i
+            class="fa-solid fa-triangle-exclamation"></i> COORDINATOR ISSUE DESK</div>
+        <h2 class="blink-heading">Event Issue Management</h2>
+        <p>Search registered participants and submit event change requests for Admin approval</p>
+      </div>
+
+      <!-- Search Card -->
+      <div class="inside-event-search-card" style="margin-bottom: 1.25rem;">
+        <div class="search-input-group">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="eventIssueSearchInput"
+            placeholder="Search participant by Name, Phone Number, or Registration ID (e.g. SPOT-2026-XXXX)...">
+          <button id="clearEventIssueSearch" class="btn-clear-in-event"><i class="fa-solid fa-xmark"></i> Clear</button>
+        </div>
+        <div class="search-count-label" id="eventIssueSearchCount">Showing 0 participants</div>
+      </div>
+
+      <!-- Pass Filter Buttons -->
+      <div class="pass-filter-bar"
+        style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center;">
+        <button class="pass-filter-btn active" data-pass-filter="all">All Passes</button>
+        <button class="pass-filter-btn" data-pass-filter="day1">Day 1 Pass Only</button>
+        <button class="pass-filter-btn" data-pass-filter="day2">Day 2 Pass Only</button>
+        <button class="pass-filter-btn" data-pass-filter="both">Both Days Pass</button>
+        <button id="btnRefreshEventIssue" class="btn-refresh" style="margin-left: auto;"><i
+            class="fa-solid fa-rotate"></i> Refresh List</button>
+      </div>
+
+      <!-- Participant Records Table -->
+      <div class="table-container">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th style="width: 40px; text-align: center;">#</th>
+              <th>Reg Code</th>
+              <th>Participant Name</th>
+              <th>Phone Number</th>
+              <th>College</th>
+              <th>Pass Type</th>
+              <th>Current Registered Events</th>
+              <th style="text-align: center;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="eventIssueTableBody">
+            <tr>
+              <td colspan="8" style="text-align:center; padding: 2rem; color: #64748b;">Loading participants...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div id="eventIssuePagination"
+      style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; margin-top: 1rem; border-top: 1px solid #e2e8f0;">
+      <div style="font-size: 0.9rem; color: #64748b;" id="eventIssuePaginationInfo">Showing 0-0 of 0</div>
+      <div style="display: flex; gap: 0.5rem;">
+        <button id="btnEventIssuePrevPage" class="btn-secondary"
+          style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #f8fafc; border: 1px solid #cbd5e1; cursor: pointer; border-radius: 6px;"><i
+            class="fa-solid fa-chevron-left"></i> Prev</button>
+        <button id="btnEventIssueNextPage" class="btn-secondary"
+          style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #f8fafc; border: 1px solid #cbd5e1; cursor: pointer; border-radius: 6px;">Next
+          <i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODULE 3: DEDICATED FREE FIRE 4-PLAYER KIOSK -->
+  <!-- ========================================== -->
+  <main class="app-view-panel" id="viewFreeFireKiosk">
+    <div class="kiosk-container">
+      <div class="kiosk-banner">
+        <div class="banner-badge ff-badge"><i class="fa-solid fa-fire-flame-curved"></i> STANDALONE TOURNAMENT</div>
+        <h2 class="blink-heading">Free Fire 4-Player Team Registration</h2>
+        <p>Register your 4-player squad for the Free Fire Tournament</p>
+      </div>
+
+      <div class="spot-form-nav-bar">
+        <button type="button" class="btn-back-hub" id="btnBackToSpotHubFromFF">
+          <i class="fa-solid fa-arrow-left"></i> Back to Spot Registration
+        </button>
+        <div class="spot-form-nav-pill">
+          <i class="fa-solid fa-gamepad" style="color:#dc2626;"></i> Free Fire Tournament Registration Form
+        </div>
+      </div>
+
+      <!-- FREE FIRE COUNTER OPERATOR DESK STATION BAR -->
+      <div class="spot-counter-desk-bar" style="margin-bottom: 1.25rem;">
+        <div class="counter-badge-info">
+          <div class="counter-icon-wrap" style="background: rgba(220, 38, 38, 0.2); color: #dc2626;"><i
+              class="fa-solid fa-headset"></i></div>
+          <div>
+            <div class="counter-sub-title">ON-SPOT REGISTRATION STATION</div>
+            <div class="counter-main-name" id="spotFfActiveCounterDisplay">Counter 1 • Dr. Kumar</div>
+          </div>
+        </div>
+        <div class="counter-select-group">
+          <label for="spotFfActiveCounterSelect"><i class="fa-solid fa-sliders"></i> Station:</label>
+          <select id="spotFfActiveCounterSelect" class="spot-station-select"
+            title="Select your active registration counter">
+            <option value="Counter 1">Counter 1</option>
+            <option value="Counter 2">Counter 2</option>
+            <option value="Counter 3">Counter 3</option>
+            <option value="Counter 4">Counter 4</option>
+            <option value="Counter 5">Counter 5</option>
+            <option value="Counter 6">Counter 6</option>
+            <option value="Counter 7">Counter 7</option>
+            <option value="Counter 8">Counter 8</option>
+            <option value="Counter 9">Counter 9</option>
+            <option value="Counter 10">Counter 10</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="registration-card">
+        <form id="formFreeFireKiosk" onsubmit="return false;">
+
+          <!-- Team Name Input -->
+          <div class="form-block">
+            <div class="block-title"><span class="step-num">1</span> Squad / Team Details</div>
+            <div class="field-group full-width" style="margin-top: 0.85rem;">
+              <label for="ffTeamName"><i class="fa-solid fa-shield-halved"></i> Team / Squad Name *</label>
+              <input type="text" id="ffTeamName" placeholder="Enter Team Name (e.g. Cyber Ninjas)" required>
+            </div>
+          </div>
+
+          <!-- 4 Players Input Grid -->
+          <div class="form-block">
+            <div class="block-title"><span class="step-num">2</span> 4 Squad Players Details</div>
+            <div class="ff-players-grid">
+
+              <!-- Player 1 (Captain) -->
+              <div class="ff-player-card">
+                <div class="p-card-header"><i class="fa-solid fa-crown"></i> Player 1 (Captain) *</div>
+                <div class="field-group">
+                  <label>Full Name</label>
+                  <input type="text" id="ffP1Name" placeholder="Captain Full Name" required>
+                </div>
+                <div class="field-group">
+                  <label>10-Digit Phone</label>
+                  <input type="tel" id="ffP1Phone" placeholder="Captain Phone" maxlength="10" required>
+                </div>
+                <div class="field-group">
+                  <label>Email Address</label>
+                  <input type="email" id="ffP1Email" placeholder="Captain Email" required>
+                </div>
+                <div class="field-group">
+                  <label>College Name</label>
+                  <input type="text" id="ffP1College" placeholder="College Name" required>
+                </div>
+              </div>
+
+              <!-- Player 2 -->
+              <div class="ff-player-card">
+                <div class="p-card-header"><i class="fa-solid fa-user"></i> Player 2 *</div>
+                <div class="field-group">
+                  <label>Full Name</label>
+                  <input type="text" id="ffP2Name" placeholder="Player 2 Name" required>
+                </div>
+                <div class="field-group">
+                  <label>10-Digit Phone</label>
+                  <input type="tel" id="ffP2Phone" placeholder="Player 2 Phone" maxlength="10" required>
+                </div>
+                <div class="field-group">
+                  <label>Email Address</label>
+                  <input type="email" id="ffP2Email" placeholder="Player 2 Email" required>
+                </div>
+                <div class="field-group">
+                  <label>College Name</label>
+                  <input type="text" id="ffP2College" placeholder="College Name" required>
+                </div>
+              </div>
+
+              <!-- Player 3 -->
+              <div class="ff-player-card">
+                <div class="p-card-header"><i class="fa-solid fa-user"></i> Player 3 *</div>
+                <div class="field-group">
+                  <label>Full Name</label>
+                  <input type="text" id="ffP3Name" placeholder="Player 3 Name" required>
+                </div>
+                <div class="field-group">
+                  <label>10-Digit Phone</label>
+                  <input type="tel" id="ffP3Phone" placeholder="Player 3 Phone" maxlength="10" required>
+                </div>
+                <div class="field-group">
+                  <label>Email Address</label>
+                  <input type="email" id="ffP3Email" placeholder="Player 3 Email" required>
+                </div>
+                <div class="field-group">
+                  <label>College Name</label>
+                  <input type="text" id="ffP3College" placeholder="College Name" required>
+                </div>
+              </div>
+
+              <!-- Player 4 -->
+              <div class="ff-player-card">
+                <div class="p-card-header"><i class="fa-solid fa-user"></i> Player 4 *</div>
+                <div class="field-group">
+                  <label>Full Name</label>
+                  <input type="text" id="ffP4Name" placeholder="Player 4 Name" required>
+                </div>
+                <div class="field-group">
+                  <label>10-Digit Phone</label>
+                  <input type="tel" id="ffP4Phone" placeholder="Player 4 Phone" maxlength="10" required>
+                </div>
+                <div class="field-group">
+                  <label>Email Address</label>
+                  <input type="email" id="ffP4Email" placeholder="Player 4 Email" required>
+                </div>
+                <div class="field-group">
+                  <label>College Name</label>
+                  <input type="text" id="ffP4College" placeholder="College Name" required>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="form-submit-row">
+            <button type="button" id="btnSubmitFreeFireTeam" class="btn-review btn-ff-submit">
+              <i class="fa-solid fa-check-double"></i> Confirm 4-Player Free Fire Registration (₹400)
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODULE 3: DEDICATED DAY 2 GATE SEARCH      -->
+  <!-- ========================================== -->
+  <main class="app-view-panel" id="viewDay2Search">
+    <div class="day2-search-container">
+      <div class="day2-search-banner">
+        <div class="search-badge-green"><i class="fa-solid fa-shield-halved"></i> GATE VERIFICATION DESK</div>
+        <h2 class="blink-heading">Day 2 Student Registration Verification</h2>
+        <p>Search students returning on Day 2 to confirm if they registered for Day 2 on Day 1</p>
+      </div>
+
+      <div class="day2-search-card">
+        <div class="search-input-wrapper-large">
+          <i class="fa-solid fa-magnifying-glass search-icon-large"></i>
+          <input type="text" id="day2GateSearchInput" placeholder="Enter Student Name, Phone Number, or College Name..."
+            autocomplete="off">
+          <button id="btnTriggerDay2Search" class="btn-search-trigger">Verify Student</button>
+        </div>
+        <div class="search-hint"><i class="fa-solid fa-info-circle"></i> Instant gate lookup across all spot
+          registrations</div>
+      </div>
+
+      <!-- Verification Results Area -->
+      <div id="day2SearchResultContainer" class="day2-results-container"></div>
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODULE 3: COORDINATOR LOGIN & PORTAL       -->
+  <!-- ========================================== -->
+  <div class="app-view-panel" id="viewCoordinatorLogin">
+
+    <!-- LOGIN SCREEN (Shown if not logged in) -->
+    <div class="login-container" id="coordinatorLoginBox">
+      <div class="login-card">
+        <div class="login-header">
+          <div class="login-icon-circle"><i class="fa-solid fa-user-shield"></i></div>
+          <h3>Event Coordinator Login</h3>
+          <p>Login with your specific event credentials or master coordinator account</p>
+        </div>
+
+        <form id="loginForm" onsubmit="return false;">
+          <div class="field-group">
+            <label for="loginEmail"><i class="fa-solid fa-user"></i> Coordinator Username</label>
+            <input type="text" id="loginEmail" placeholder="e.g. adzap, hackathon, or coordinator" value="" required
+              autocomplete="username">
+          </div>
+
+          <div class="field-group">
+            <label for="loginPassword"><i class="fa-solid fa-key"></i> Password</label>
+            <input type="password" id="loginPassword" placeholder="Enter password (e.g. adzap123, coord123)" value=""
+              required autocomplete="current-password">
+          </div>
+
+          <div class="field-group" style="margin-top: -0.25rem; margin-bottom: 1.25rem;">
+            <div
+              style="font-size: 0.78rem; color: #0284c7; background: #f0f9ff; padding: 0.45rem 0.7rem; border-radius: 6px; border: 1px solid #bae6fd;">
+              <i class="fa-solid fa-lightbulb"></i> <strong>Event Login:</strong> e.g. <code>adzap / adzap123</code>,
+              <code>hackathon / hack123</code>, <code>webforge / web123</code>, or Master:
+              <code>coordinator / coord123</code>
+            </div>
+          </div>
+
+          <button type="button" id="btnLoginSubmit" class="btn-login">
+            <i class="fa-solid fa-right-to-bracket"></i> Login to Event Desk
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- LOGGED IN COORDINATOR DASHBOARD (Shown after login) -->
+    <div class="admin-portal" id="coordinatorDashboardBox" style="display: none;">
+
+      <!-- Admin Top Header -->
+      <header class="admin-header">
+        <div class="admin-header-left" style="display: flex; align-items: center; gap: 1rem;">
+          <div class="admin-logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>COORDINATOR PORTAL</span>
+          </div>
+          <!-- Active Coordinator Identity Badge -->
+          <div class="coord-active-user-badge" id="coordActiveUserBadge" style="display: none;">
+            <i class="fa-solid fa-id-badge" style="color: #f59e0b;"></i>
+            <span id="coordActiveUserBadgeText">Adzap Coordinator</span>
+          </div>
+        </div>
+
+        <div class="admin-header-right">
+          <button class="btn-exit-admin" id="btnLogoutCoordinator">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+          </button>
+        </div>
+      </header>
+
+      <!-- Admin Layout with Compact Sidebar -->
+      <div class="admin-layout">
+
+        <!-- COMPACT LEFT SIDEBAR MENU WITH TOP DAY TOGGLE -->
+        <aside class="sidebar">
+          <div class="sidebar-section">
+            <div class="sidebar-label">DASHBOARD NAVIGATION</div>
+            <button class="sidebar-item active" id="navAdminDashboard" data-admin-panel="dashboard">
+              <i class="fa-solid fa-chart-pie"></i> Dashboard Overview
+            </button>
+            <button class="sidebar-item ff-sidebar-item" id="navFreeFireDashboard" data-admin-panel="freefire">
+              <i class="fa-solid fa-gamepad"></i> 🎮 Free Fire Dashboard
+            </button>
+          </div>
+
+          <!-- TOP-LEFT DAY SELECTOR TABS -->
+          <div class="sidebar-section">
+            <div class="sidebar-label">SELECT EVENT DAY</div>
+            <div class="day-tab-switch">
+              <button class="day-tab-btn active" id="tabSelectDay1" data-day="day1">
+                <i class="fa-solid fa-1"></i> Day 1 (14)
+              </button>
+              <button class="day-tab-btn" id="tabSelectDay2" data-day="day2">
+                <i class="fa-solid fa-2"></i> Day 2 (11)
+              </button>
+            </div>
+          </div>
+
+          <!-- DYNAMIC SINGLE EVENT LIST -->
+          <div class="sidebar-section">
+            <div class="sidebar-label flex-between" id="sidebarDayListTitle">
+              <span><i class="fa-solid fa-list-check"></i> DAY 1 EVENTS</span>
+            </div>
+            <div class="sidebar-event-list" id="sidebarDynamicEvents"></div>
+          </div>
+        </aside>
+
+        <!-- ADMIN MAIN CONTENT AREA -->
+        <main class="admin-content">
+
+          <!-- PANEL A: ADMIN DASHBOARD OVERVIEW -->
+          <div id="adminPanelDashboard" class="admin-panel active">
+            <div class="panel-header">
+              <h2><i class="fa-solid fa-gauge-high"></i> Spot Registration Dashboard Overview</h2>
+              <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                <button id="btnRefreshStats" class="btn-refresh"><i class="fa-solid fa-rotate"></i> Refresh
+                  Data</button>
+              </div>
+            </div>
+
+            <!-- ADMIN SECTION: PENDING PARTICIPANT MODIFICATION REQUESTS -->
+            <div class="admin-edit-requests-card" style="margin-top: 2rem;">
+              <div class="panel-header" style="margin-bottom: 1rem;">
+                <h3><i class="fa-solid fa-clock-rotate-left" style="color:#d97706;"></i> Pending Participant
+                  Modification Requests</h3>
+                <span class="badge-count" id="pendingRequestsBadge"
+                  style="background:#f59e0b; color:#ffffff; font-weight:800;">0 Pending</span>
+              </div>
+              <div class="table-container">
+                <table class="modern-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Participant Info</th>
+                      <th>Current Details</th>
+                      <th>Requested New Details</th>
+                      <th>Event & Time</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminEditRequestsTableBody">
+                    <tr>
+                      <td colspan="6" style="text-align:center; padding: 2rem; color: #64748b;">No pending modification
+                        requests.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ADMIN SECTION: EVENT CHANGE REQUESTS (AUDIT TRAIL & APPROVAL WORKFLOW) -->
+            <div class="admin-edit-requests-card" style="margin-top: 2rem;">
+              <div class="panel-header" style="margin-bottom: 1rem;">
+                <h3><i class="fa-solid fa-calendar-check" style="color:#0284c7;"></i> Event Change Requests (Coordinator
+                  Issue Desk)</h3>
+                <span class="badge-count" id="pendingEventRequestsBadge"
+                  style="background:#0284c7; color:#ffffff; font-weight:800;">0 Pending</span>
+              </div>
+              <div class="table-container">
+                <table class="modern-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Participant Info</th>
+                      <th>Current (Old) Events</th>
+                      <th>Requested (New) Events</th>
+                      <th>Event & Reason</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminEventRequestsTableBody">
+                    <tr>
+                      <td colspan="6" style="text-align:center; padding: 2rem; color: #64748b;">No event change requests
+                        found.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL B: INDIVIDUAL EVENT COORDINATOR VIEW -->
+          <div id="adminPanelCoordinator" class="admin-panel">
+            <div class="coordinator-header-card">
+              <div class="header-left-info">
+                <span class="evt-day-badge" id="coordEventDayBadge">DAY 1</span>
+                <h2 id="coordEventTitle">Select an Event</h2>
+                <span class="evt-category-badge" id="coordEventCategory">Category</span>
+              </div>
+              <div class="header-right-count">
+                <span class="count-big" id="coordEventCount">0</span>
+                <span class="count-label">Registered Students</span>
+              </div>
+            </div>
+
+            <!-- COORDINATOR SUBTAB SWITCHER: PARTICIPANTS VS FORMED TEAMS -->
+            <div class="coord-subtab-switcher" id="coordSubtabSwitcher">
+              <button type="button" class="coord-subtab-btn active" id="btnCoordSubtabParticipants"
+                data-subtab="participants">
+                <i class="fa-solid fa-users"></i> Event Participants & Team Formation (<span
+                  id="coordUnassignedCountBadge">0</span>)
+              </button>
+              <button type="button" class="coord-subtab-btn" id="btnCoordSubtabTeams" data-subtab="teams">
+                <i class="fa-solid fa-people-group"></i> Formed Teams (<span id="coordTeamsCountBadge">0</span>)
+              </button>
+            </div>
+
+            <!-- SUBTAB 1: PARTICIPANTS & TEAM FORMATION -->
+            <div id="coordSubtabParticipantsContent" class="coord-subtab-panel active">
+
+              <!-- DEDICATED IN-EVENT SEARCH BAR -->
+              <div class="inside-event-search-card" style="margin-bottom: 1rem;">
+                <div class="search-input-group">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="eventSearchInput"
+                    placeholder="Search by Student Name, Phone, Email, College, or Reg ID...">
+                  <button id="clearEventSearch" class="btn-clear-in-event"><i class="fa-solid fa-xmark"></i>
+                    Clear</button>
+                </div>
+                <div class="search-count-label" id="eventSearchCount">Showing 0 participants</div>
+              </div>
+
+              <!-- DYNAMIC TEAM FORMATION PANEL (REUSING WHATSAPP-STYLE SELECTION CONCEPT) -->
+              <div class="whatsapp-selected-panel" id="coordSelectedPanel">
+                <div class="panel-title-row">
+                  <span><i class="fa-solid fa-user-plus" style="color:#059669;"></i> Selected Team Members (<span
+                      id="coordSelectedChipCount">0</span> / <span id="coordEventMaxBadge">5</span>):</span>
+                  <span class="panel-hint" id="coordTeamRuleHint">Select between Min and Max participants</span>
+                </div>
+                <div id="coordSelectedChipsList" class="chips-flex-list">
+                  <span class="no-chips-text">No participants selected yet. Select checkboxes below to form a
+                    team.</span>
+                </div>
+              </div>
+
+              <!-- ACTION BAR TO CREATE TEAM WITH DYNAMIC MIN/MAX VALIDATION -->
+              <div class="action-bar-card" id="coordActionBarCard">
+                <div class="action-bar-left">
+                  <i class="fa-solid fa-circle-info"></i>
+                  <span>Selected <strong><span id="coordSelectedCount">0</span></strong> participant(s) • <span
+                      id="coordValidationMsg" style="color: #d97706; font-weight: 700;">Select participants to form
+                      team</span></span>
+                </div>
+                <div class="action-bar-right">
+                  <button type="button" id="btnCreateEventTeam" class="btn-form-ff-team"
+                    onclick="window.openCreateEventTeamModal()" disabled>
+                    <i class="fa-solid fa-people-group"></i> Create Team
+                  </button>
+                </div>
+              </div>
+
+              <!-- Clean Linear Coordinator Table -->
+              <div class="table-container">
+                <table class="modern-table">
+                  <thead>
+                    <tr>
+                      <th class="col-coord-select" style="width: 50px; text-align: center;">Select</th>
+                      <th style="width: 40px; text-align: center;">#</th>
+                      <th>Student Name & Reg Code</th>
+                      <th>Mobile Number</th>
+                      <th>College Name</th>
+                      <th>Email Address</th>
+                      <th class="col-coord-team-status">Team Status</th>
+                      <th>Quick Actions ("In", Food Token, Tag Given)</th>
+                      <th style="text-align: center;">Edit Request</th>
+                    </tr>
+                  </thead>
+                  <tbody id="eventStudentsTableBody">
+                    <tr>
+                      <td colspan="9" style="text-align:center; padding: 2rem; color: #64748b;">Select an event from the
+                        left sidebar.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- SUBTAB 2: FORMED TEAMS LIST (TREE / CARDS VIEW) -->
+            <div id="coordSubtabTeamsContent" class="coord-subtab-panel" style="display: none;">
+
+              <!-- Teams Search Bar -->
+              <div class="inside-event-search-card" style="margin-bottom: 1.25rem;">
+                <div class="search-input-group">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="coordTeamsSearchInput"
+                    placeholder="Search formed teams by Team ID, Team Name, or Member Name...">
+                  <button id="clearCoordTeamsSearch" class="btn-clear-in-event"><i class="fa-solid fa-xmark"></i>
+                    Clear</button>
+                </div>
+                <div class="search-count-label" id="coordTeamsSearchCount">Showing 0 formed teams</div>
+              </div>
+
+              <!-- Formed Teams Grid / List -->
+              <div id="coordFormedTeamsList" class="formed-teams-grid">
+                <div
+                  style="text-align: center; padding: 3rem; color: #64748b; background: #f8fafc; border-radius: 14px; border: 1.5px dashed #cbd5e1;">
+                  <i class="fa-solid fa-people-group"
+                    style="font-size: 2.5rem; margin-bottom: 0.75rem; color: #94a3b8; display: block;"></i>
+                  <h4 style="font-weight: 800; color: #1e0b36; margin-bottom: 0.35rem;">No Teams Formed Yet</h4>
+                  <p style="font-size: 0.9rem; margin: 0;">Switch to the "Event Participants & Team Formation" tab to
+                    create teams for this event.</p>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- PANEL C: DEDICATED FREE FIRE TOURNAMENT DASHBOARD -->
+          <div id="adminPanelFreeFire" class="admin-panel">
+            <div class="panel-header ff-header">
+              <h2><i class="fa-solid fa-fire-flame-curved"></i> 🎮 Free Fire Tournament Dashboard</h2>
+              <div class="ff-subtab-switcher">
+                <button class="ff-subtab-btn active" id="btnFfSubtabSolo" data-subtab="solo">
+                  <i class="fa-solid fa-user-check"></i> Sub-Tab 1: Online Solo Registrations
+                </button>
+                <button class="ff-subtab-btn" id="btnFfSubtabTeams" data-subtab="teams">
+                  <i class="fa-solid fa-people-group"></i> Sub-Tab 2: Formed Teams Dashboard
+                </button>
+              </div>
+            </div>
+
+            <!-- SUB-TAB 1: ONLINE SOLO REGISTRATIONS (MAKE A TEAM WITH SEARCH & CHIPS) -->
+            <div id="ffSubtabSoloContent" class="ff-subtab-panel active">
+
+              <!-- Standalone Search Bar for Free Fire Solo Registrations -->
+              <div class="inside-event-search-card" style="margin-bottom: 1rem;">
+                <div class="search-input-group">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="ffSoloSearchInput"
+                    placeholder="Search Free Fire online solo players by Name (e.g. Yokesh), Phone, or College...">
+                  <button id="clearFfSoloSearch" class="btn-clear-in-event"><i class="fa-solid fa-xmark"></i>
+                    Clear</button>
+                </div>
+                <div class="search-count-label" id="ffSoloSearchCount">Showing 0 solo players</div>
+              </div>
+
+              <!-- WhatsApp-Style Selected Squad Members Chips Container -->
+              <div class="whatsapp-selected-panel" id="ffSelectedPanel">
+                <div class="panel-title-row">
+                  <span><i class="fa-solid fa-user-plus" style="color:#059669;"></i> Selected Squad Members (<span
+                      id="ffSelectedChipCount">0</span>/4):</span>
+                  <span class="panel-hint">Search & click checkboxes to pick 4 members</span>
+                </div>
+                <div id="ffSelectedChipsList" class="chips-flex-list">
+                  <span class="no-chips-text">No players selected yet. Search & select 4 players to form team.</span>
+                </div>
+              </div>
+
+              <!-- Action Bar to Form Team -->
+              <div class="action-bar-card">
+                <div class="action-bar-left">
+                  <i class="fa-solid fa-info-circle"></i>
+                  <span>Selected <strong><span id="ffSelectedCount">0</span> of 4</strong> required solo players</span>
+                </div>
+                <div class="action-bar-right">
+                  <button id="btnFormFfTeam" class="btn-form-ff-team" disabled>
+                    <i class="fa-solid fa-people-group"></i> Form 4-Player Team
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-container">
+                <table class="modern-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px; text-align: center;">Select</th>
+                      <th>#</th>
+                      <th>Student Name</th>
+                      <th>Phone Number</th>
+                      <th>Email Address</th>
+                      <th>College Name</th>
+                      <th>Registration Source</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ffSoloTableBody">
+                    <tr>
+                      <td colspan="7" style="text-align:center; padding: 2rem; color: #64748b;">Loading online solo
+                        players...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- SUB-TAB 2: FORMED TEAMS DASHBOARD (WITH EDIT TEAM BUTTON) -->
+            <div id="ffSubtabTeamsContent" class="ff-subtab-panel">
+              <div class="inside-event-search-card">
+                <div class="search-input-group">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="ffTeamSearchInput"
+                    placeholder="Search formed teams by Team Name, Code, or Player Name...">
+                </div>
+                <div class="search-count-label" id="ffTeamsSearchCount">Showing 0 teams</div>
+              </div>
+
+              <div id="ffTeamsGrid" class="ff-teams-grid">
+                <div style="padding: 2rem; text-align: center; color: #64748b;">Loading formed teams...</div>
+              </div>
+            </div>
+          </div>
+
+        </main>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODULE: MASTER ADMIN PAGE (ALL ACCESS)     -->
+  <!-- ========================================== -->
+  <main class="app-view-panel" id="viewAdminMaster">
+    <div class="admin-master-container">
+
+      <!-- Top Admin Header -->
+      <div class="admin-master-topbar">
+        <div class="admin-title-area">
+          <div class="admin-badge-gold"><i class="fa-solid fa-crown"></i> SUPER ADMIN ACCESS</div>
+          <h2>Master Administration & Analytics Portal</h2>
+          <p>Full system control, real-time metrics, modification approvals, and data export center</p>
+        </div>
+        <div class="admin-topbar-actions">
+          <button type="button" id="btnAdminMasterImportExcel" class="btn-admin-top-action btn-import-gradient"
+            onclick="window.openImportExcelModal()">
+            <i class="fa-solid fa-file-arrow-up"></i> Import Excel
+          </button>
+          <button id="btnAdminMasterRefresh" class="btn-admin-top-action btn-refresh-gradient">
+            <i class="fa-solid fa-rotate"></i> Refresh Data
+          </button>
+          <a href="/api/admin/export/excel" class="btn-admin-top-action btn-excel-download" id="btnTopDownloadExcel"
+            download>
+            <i class="fa-solid fa-file-excel"></i> Download Master Excel (.xlsx)
+          </a>
+        </div>
+      </div>
+
+      <!-- LIVE KPI EXECUTIVE SUMMARY CARDS -->
+      <div class="admin-kpi-grid">
+        <!-- 1. Online Registrations -->
+        <div class="kpi-master-card kpi-online">
+          <div class="kpi-icon-wrap"><i class="fa-solid fa-globe"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-num" id="kpiAdminOnlineCount">0</span>
+            <span class="kpi-title">Online Registrations</span>
+            <span class="kpi-sub" id="kpiAdminOnlineSub">Pre-registered participants</span>
+          </div>
+        </div>
+
+        <!-- 2. Spot Registrations -->
+        <div class="kpi-master-card kpi-spot">
+          <div class="kpi-icon-wrap"><i class="fa-solid fa-bolt"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-num" id="kpiAdminSpotCount">0</span>
+            <span class="kpi-title">Spot Registrations</span>
+            <span class="kpi-sub" id="kpiAdminSpotSub">On-desk / Kiosk registrations</span>
+          </div>
+        </div>
+
+        <!-- 3. Free Fire Tournament -->
+        <div class="kpi-master-card kpi-freefire">
+          <div class="kpi-icon-wrap"><i class="fa-solid fa-gamepad"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-num" id="kpiAdminFfPlayersCount">0</span>
+            <span class="kpi-title">Free Fire Tournament</span>
+            <span class="kpi-sub" id="kpiAdminFfTeamsCount">0 Squads / Teams formed</span>
+          </div>
+        </div>
+
+        <!-- 4. Total All Registrations -->
+        <div class="kpi-master-card kpi-total">
+          <div class="kpi-icon-wrap"><i class="fa-solid fa-users"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-num" id="kpiAdminTotalCount">0</span>
+            <span class="kpi-title">Total Registrations</span>
+            <span class="kpi-sub" id="kpiAdminPassBreakdown">Day 1: 0 | Day 2: 0 | Both: 0</span>
+          </div>
+        </div>
+
+        <!-- 5. Total Revenue Collection -->
+        <div class="kpi-master-card kpi-revenue">
+          <div class="kpi-icon-wrap"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-num" id="kpiAdminTotalRevenue">₹0</span>
+            <span class="kpi-title">Total Revenue Collection</span>
+            <span class="kpi-sub">Fees Collected (Spot & Passes)</span>
+          </div>
+        </div>
+
+        <!-- 6. Pending Approvals -->
+        <div class="kpi-master-card kpi-pending">
+          <div class="kpi-icon-wrap"><i class="fa-solid fa-clock-rotate-left"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-num" id="kpiAdminPendingTotal">0</span>
+            <span class="kpi-title">Pending Approvals</span>
+            <span class="kpi-sub" id="kpiAdminPendingSub">Profile & Event Change Requests</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MASTER ADMIN NAVIGATION TABS -->
+      <div class="admin-tabs-nav-bar">
+        <button class="admin-tab-btn active" data-admin-subtab="directory">
+          <i class="fa-solid fa-address-book"></i> Master Participant Directory
+        </button>
+        <button class="admin-tab-btn" data-admin-subtab="approvals">
+          <i class="fa-solid fa-clipboard-check"></i> Approvals Desk
+          <span class="tab-badge" id="tabApprovalsBadge">0</span>
+        </button>
+        <button class="admin-tab-btn" data-admin-subtab="freefire">
+          <i class="fa-solid fa-gamepad"></i> Free Fire Hub
+        </button>
+        <button class="admin-tab-btn" data-admin-subtab="counters">
+          <i class="fa-solid fa-headset"></i> Counter Management
+        </button>
+        <button class="admin-tab-btn" data-admin-subtab="counter-reg">
+          <i class="fa-solid fa-chart-pie"></i> Counter Registration Report (counter-reg)
+        </button>
+        <button class="admin-tab-btn" data-admin-subtab="events">
+          <i class="fa-solid fa-calendar-check"></i> Event Coordinator Desk
+        </button>
+        <button class="admin-tab-btn" data-admin-subtab="export">
+          <i class="fa-solid fa-file-excel"></i> Excel & Data Export Center
+        </button>
+        <button class="admin-tab-btn" data-admin-subtab="system">
+          <i class="fa-solid fa-server"></i> System & Database Control
+        </button>
+        <button class="admin-tab-btn" data-admin-subtab="access-control"
+          style="background: linear-gradient(135deg, #1e0b36, #3b146e); color: #f59e0b; border: 1.5px solid rgba(245, 158, 11, 0.4); font-weight: 700;">
+          <i class="fa-solid fa-key" style="color: #f59e0b;"></i> Access Control & Credentials
+        </button>
+      </div>
+
+      <!-- SUB-TAB 1: MASTER PARTICIPANT DIRECTORY -->
+      <div class="admin-subtab-pane active" id="adminPaneDirectory">
+        <div class="pane-card">
+          <div class="pane-header-row">
+            <div>
+              <h3><i class="fa-solid fa-users-gear" style="color: #0284c7;"></i> Master Participant Directory</h3>
+              <p class="pane-desc">Search, filter, check-in, issue food tokens, and manage all registered students</p>
+            </div>
+            <div class="pane-header-actions">
+              <a href="/api/admin/export/excel" class="btn-excel-pill" download><i class="fa-solid fa-file-excel"></i>
+                Export Directory</a>
+            </div>
+          </div>
+
+          <!-- Search & Multilevel Filter Bar -->
+          <div class="directory-filter-bar">
+            <div class="search-input-group" style="flex: 1; min-width: 280px;">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="adminDirSearchInput"
+                placeholder="Search by Name, Phone, Email, College, or Reg Code...">
+              <button id="clearAdminDirSearch" class="btn-clear-in-event"><i class="fa-solid fa-xmark"></i>
+                Clear</button>
+            </div>
+
+            <!-- Source Filter (All / Online / Spot) -->
+            <div class="filter-pill-group">
+              <span class="filter-label">Source:</span>
+              <button class="filter-pill-btn active" data-dir-source="all">All</button>
+              <button class="filter-pill-btn" data-dir-source="online"><i class="fa-solid fa-globe"></i> Online</button>
+              <button class="filter-pill-btn" data-dir-source="spot"><i class="fa-solid fa-bolt"></i> Spot</button>
+            </div>
+
+            <!-- Pass Filter (All / Day 1 / Day 2 / Both) -->
+            <div class="filter-pill-group">
+              <span class="filter-label">Pass:</span>
+              <button class="filter-pill-btn active" data-dir-pass="all">All Passes</button>
+              <button class="filter-pill-btn" data-dir-pass="day1">Day 1</button>
+              <button class="filter-pill-btn" data-dir-pass="day2">Day 2</button>
+              <button class="filter-pill-btn" data-dir-pass="both">Both Days</button>
+            </div>
+          </div>
+
+          <div class="search-count-label" id="adminDirCountLabel">Showing 0 of 0 participants</div>
+
+          <!-- Master Table -->
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th style="width: 40px; text-align: center;">#</th>
+                  <th>Reg Code</th>
+                  <th>Participant Details</th>
+                  <th>Contact Info</th>
+                  <th>College Name</th>
+                  <th>Source & Pass</th>
+                  <th>Registered Events</th>
+                  <th>Quick Actions (In, Food, Tag)</th>
+                  <th style="text-align: center;">Modify</th>
+                </tr>
+              </thead>
+              <tbody id="adminDirTableBody">
+                <tr>
+                  <td colspan="9" style="text-align:center; padding: 2rem; color: #64748b;">Loading master directory...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-TAB 2: APPROVALS DESK -->
+      <div class="admin-subtab-pane" id="adminPaneApprovals">
+        <!-- Part A: Participant Profile Modification Requests -->
+        <div class="pane-card" style="margin-bottom: 2rem;">
+          <div class="pane-header-row">
+            <div>
+              <h3><i class="fa-solid fa-user-pen" style="color: #d97706;"></i> Participant Profile Modification Requests
+              </h3>
+              <p class="pane-desc">Review and approve name, phone, college, and email corrections requested by
+                coordinators</p>
+            </div>
+            <span class="badge-count" id="adminMasterPendingProfileBadge"
+              style="background:#f59e0b; color:#fff; font-weight:800;">0 Pending</span>
+          </div>
+
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Participant</th>
+                  <th>Current Details</th>
+                  <th>Requested Details</th>
+                  <th>Event & Date</th>
+                  <th>Decision</th>
+                </tr>
+              </thead>
+              <tbody id="adminMasterProfileRequestsBody">
+                <tr>
+                  <td colspan="6" style="text-align:center; padding: 2rem; color: #64748b;">No profile modification
+                    requests.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Part B: Event Change Requests -->
+        <div class="pane-card">
+          <div class="pane-header-row">
+            <div>
+              <h3><i class="fa-solid fa-calendar-check" style="color: #0284c7;"></i> Event Change Requests (Issue Desk)
+              </h3>
+              <p class="pane-desc">Live side-by-side comparison of old events vs requested new events with instant
+                approval</p>
+            </div>
+            <span class="badge-count" id="adminMasterPendingEventBadge"
+              style="background:#0284c7; color:#fff; font-weight:800;">0 Pending</span>
+          </div>
+
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Participant</th>
+                  <th>Current (Old) Events</th>
+                  <th>Requested (New) Events</th>
+                  <th>Event & Time</th>
+                  <th>Decision</th>
+                </tr>
+              </thead>
+              <tbody id="adminMasterEventRequestsBody">
+                <tr>
+                  <td colspan="6" style="text-align:center; padding: 2rem; color: #64748b;">No event change requests.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-TAB 3: FREE FIRE HUB -->
+      <div class="admin-subtab-pane" id="adminPaneFreefire">
+        <div class="pane-card">
+          <div class="pane-header-row">
+            <div>
+              <h3><i class="fa-solid fa-fire-flame-curved" style="color: #dc2626;"></i> 🎮 Free Fire Tournament Command
+                Center</h3>
+              <p class="pane-desc">Manage online solo players, form 4-player squads with WhatsApp-style chips, and
+                manage team rosters</p>
+            </div>
+            <div class="ff-subtab-switcher">
+              <button class="ff-subtab-btn active" id="btnAdminFfSubSolo" data-ff-sub="solo">
+                <i class="fa-solid fa-user-check"></i> Solo Online Players (<span id="adminFfSoloCount">0</span>)
+              </button>
+              <button class="ff-subtab-btn" id="btnAdminFfSubTeams" data-ff-sub="teams">
+                <i class="fa-solid fa-people-group"></i> Formed Squads (<span id="adminFfTeamsHeaderCount">0</span>)
+              </button>
+            </div>
+          </div>
+
+          <!-- FREE FIRE SOLO SECTION -->
+          <div id="adminFfSoloSection">
+            <div class="inside-event-search-card" style="margin-bottom: 1rem;">
+              <div class="search-input-group">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="adminFfSoloSearchInput"
+                  placeholder="Search solo players by Name, Phone, or College...">
+                <button id="clearAdminFfSoloSearch" class="btn-clear-in-event"><i class="fa-solid fa-xmark"></i>
+                  Clear</button>
+              </div>
+              <div class="search-count-label" id="adminFfSoloSearchCount">Showing 0 solo players</div>
+            </div>
+
+            <!-- WhatsApp Selected Chips -->
+            <div class="whatsapp-selected-panel" id="adminFfSelectedPanel">
+              <div class="panel-title-row">
+                <span><i class="fa-solid fa-user-plus" style="color:#059669;"></i> Selected Squad Members (<span
+                    id="adminFfSelectedChipCount">0</span>/4):</span>
+                <span class="panel-hint">Select exactly 4 players from the table to form team</span>
+              </div>
+              <div id="adminFfSelectedChipsList" class="chips-flex-list">
+                <span class="no-chips-text">No players selected yet. Search & select 4 players to form team.</span>
+              </div>
+            </div>
+
+            <!-- Action Bar to Form Team -->
+            <div class="action-bar-card">
+              <div class="action-bar-left">
+                <i class="fa-solid fa-info-circle"></i>
+                <span>Selected <strong><span id="adminFfSelectedCount">0</span> of 4</strong> required solo
+                  players</span>
+              </div>
+              <div class="action-bar-right">
+                <button id="btnAdminFormFfTeam" class="btn-form-ff-team" disabled>
+                  <i class="fa-solid fa-people-group"></i> Form 4-Player Team
+                </button>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table class="modern-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50px; text-align: center;">Select</th>
+                    <th>#</th>
+                    <th>Player Name</th>
+                    <th>Phone Number</th>
+                    <th>Email Address</th>
+                    <th>College Name</th>
+                    <th>Registration Source</th>
+                  </tr>
+                </thead>
+                <tbody id="adminFfSoloTableBody">
+                  <tr>
+                    <td colspan="7" style="text-align:center; padding: 2rem; color: #64748b;">Loading solo players...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- FREE FIRE FORMED TEAMS SECTION -->
+          <div id="adminFfTeamsSection" style="display: none;">
+            <div class="inside-event-search-card" style="margin-bottom: 1rem;">
+              <div class="search-input-group">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="adminFfTeamSearchInput"
+                  placeholder="Search formed teams by Squad Name, Team Code, or Player Name...">
+              </div>
+              <div class="search-count-label" id="adminFfTeamsSearchCount">Showing 0 teams</div>
+            </div>
+            <div id="adminFfTeamsGrid" class="ff-teams-grid">
+              <div style="padding: 2rem; text-align: center; color: #64748b;">Loading formed teams...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-TAB 4: MASTER EVENT COORDINATOR DESK & SEQUENTIAL ACCESS -->
+      <div class="admin-subtab-pane" id="adminPaneEvents">
+
+        <!-- Top Toolbar for One-by-One Event Navigation & Matrix Toggle -->
+        <div class="events-explorer-toolbar">
+          <div class="toolbar-left">
+            <div class="view-mode-toggle">
+              <button type="button" class="btn-view-mode active" id="btnAdminViewDetailed"
+                title="One-by-One Event View">
+                <i class="fa-solid fa-list-check"></i> One-by-One View
+              </button>
+              <button type="button" class="btn-view-mode" id="btnAdminViewMatrix" title="All 21 Events Matrix Overview">
+                <i class="fa-solid fa-table-cells"></i> All Events Matrix (21)
+              </button>
+            </div>
+
+            <!-- Day Quick Filter Chips -->
+            <div class="day-filter-chips">
+              <button type="button" class="day-chip active" id="adminDayFilterAll" data-day-filter="all">All Events
+                (21)</button>
+              <button type="button" class="day-chip" id="adminDayFilterDay1" data-day-filter="day1">Day 1 (10)</button>
+              <button type="button" class="day-chip" id="adminDayFilterDay2" data-day-filter="day2">Day 2 (11)</button>
+            </div>
+          </div>
+
+          <div class="toolbar-right">
+            <!-- Sequential One-by-One Navigator -->
+            <div class="sequential-nav-group" id="adminSequentialNavGroup">
+              <button type="button" class="btn-nav-step" id="btnAdminPrevEvent" title="Previous Event (Left Arrow)">
+                <i class="fa-solid fa-chevron-left"></i> Prev Event
+              </button>
+              <div class="event-sequence-pill" id="adminEventSequencePill">
+                <span id="adminEventSequenceIndex">Event 1</span> of <span id="adminEventSequenceTotal">21</span>
+              </div>
+              <button type="button" class="btn-nav-step" id="btnAdminNextEvent" title="Next Event (Right Arrow)">
+                Next Event <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+
+            <!-- Quick Jump Dropdown -->
+            <div class="quick-jump-group">
+              <select id="adminEventQuickJumpSelect" class="event-jump-select" title="Jump directly to any event">
+                <option value="">Jump to Event...</option>
+              </select>
+            </div>
+
+            <!-- Single Event Export -->
+            <button type="button" class="btn-export-single-evt" id="btnAdminExportCurrentEvent"
+              title="Download Excel roster for this specific event">
+              <i class="fa-solid fa-file-excel"></i> Export Event Roster (.xlsx)
+            </button>
+          </div>
+        </div>
+
+        <!-- VIEW 1: ONE-BY-ONE DETAILED DESK -->
+        <div class="admin-events-layout" id="adminDetailedEventsLayout">
+          <!-- Left Sidebar: Event List Selector -->
+          <div class="admin-events-sidebar">
+            <div class="sidebar-section">
+              <div class="sidebar-label"><i class="fa-solid fa-list-ol"></i> EVENTS DIRECTORY</div>
+              <div class="sidebar-event-list" id="adminDynamicEventsList"></div>
+            </div>
+          </div>
+
+          <!-- Right Content: Event Participants & Attendance -->
+          <div class="admin-events-content">
+            <!-- Enhanced Event Header Banner with 4 KPI metrics -->
+            <div class="coordinator-header-card enhanced-banner">
+              <div class="header-left-info">
+                <div class="badge-row">
+                  <span class="evt-day-badge" id="adminEvtDayBadge">DAY 1</span>
+                  <span class="evt-category-badge" id="adminEvtCategory">Category</span>
+                  <span class="evt-seq-tag" id="adminEvtSeqTag">#1 of 21</span>
+                </div>
+                <h2 id="adminEvtTitle">Select an Event</h2>
+                <div class="evt-subtitle" id="adminEvtSubtitle">Master Event Desk & Live Attendance Management</div>
+              </div>
+
+              <!-- 4 Live Stat Chips for Active Event -->
+              <div class="evt-stats-chips-row">
+                <div class="stat-chip chip-total">
+                  <div class="chip-num" id="adminEvtCount">0</div>
+                  <div class="chip-lbl">Enrolled Students</div>
+                </div>
+                <div class="stat-chip chip-checkedin">
+                  <div class="chip-num" id="adminEvtCheckedInCount">0</div>
+                  <div class="chip-lbl">In Event ("In")</div>
+                </div>
+                <div class="stat-chip chip-food">
+                  <div class="chip-num" id="adminEvtFoodCount">0</div>
+                  <div class="chip-lbl">Food Tokens</div>
+                </div>
+                <div class="stat-chip chip-tag">
+                  <div class="chip-num" id="adminEvtTagCount">0</div>
+                  <div class="chip-lbl">ID Badges</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="inside-event-search-card">
+              <div class="search-input-group">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="adminInsideEventSearch"
+                  placeholder="Search enrolled students by Name, Reg Code, Phone, College, or Email...">
+                <button type="button" id="clearAdminInsideEventSearch" class="btn-clear-in-event"><i
+                    class="fa-solid fa-xmark"></i> Clear</button>
+              </div>
+              <div class="search-count-label" id="adminInsideEventCount">Showing 0 participants</div>
+            </div>
+
+            <div class="table-container">
+              <table class="modern-table">
+                <thead>
+                  <tr>
+                    <th style="width: 40px; text-align: center;">#</th>
+                    <th>Participant Info</th>
+                    <th>Mobile Number</th>
+                    <th>College Name</th>
+                    <th>Email Address</th>
+                    <th>Pass / Theme</th>
+                    <th>Quick Actions ("In", Food, Tag)</th>
+                    <th style="text-align: center;">Modify</th>
+                  </tr>
+                </thead>
+                <tbody id="adminEventStudentsBody">
+                  <tr>
+                    <td colspan="8" style="text-align:center; padding: 2rem; color: #64748b;">Select an event from the
+                      left list.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 2: ALL EVENTS MATRIX GRID -->
+        <div class="admin-events-matrix-view" id="adminMatrixEventsLayout" style="display: none;">
+          <div class="matrix-header-info">
+            <div>
+              <h3><i class="fa-solid fa-table-cells" style="color: #6366f1;"></i> All Events Master Overview Matrix</h3>
+              <p>Browse all 21 technical, non-technical, cultural, and gaming events at a glance. Click any card to open
+                its one-by-one desk.</p>
+            </div>
+            <div class="matrix-summary-pill" id="adminMatrixSummaryPill">21 Events Configured</div>
+          </div>
+          <div class="events-matrix-grid" id="adminAllEventsMatrixGrid">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SUB-TAB 5: EXCEL & DATA EXPORT CENTER -->
+      <div class="admin-subtab-pane" id="adminPaneExport">
+        <div class="pane-card">
+          <div class="pane-header-row">
+            <div>
+              <h3><i class="fa-solid fa-file-excel" style="color: #059669;"></i> Excel & Data Export Center</h3>
+              <p class="pane-desc">Generate and download full spreadsheets containing all participant records, event
+                assignments, and tournament details</p>
+            </div>
+          </div>
+
+          <div class="export-cards-grid">
+            <!-- Card 1: Master All-In-One Excel Workbook -->
+            <div class="export-card featured">
+              <div class="export-card-icon" style="background: #ecfdf5; color: #059669;">
+                <i class="fa-solid fa-file-excel"></i>
+              </div>
+              <div class="export-card-body">
+                <span class="badge-recommend">RECOMMENDED</span>
+                <h4>Master Complete Excel Sheet (.xlsx)</h4>
+                <p>Contains 5 structured sheets: All Participants, Online Registrations, Spot Registrations, Free Fire
+                  Tournament, and Events Summary.</p>
+                <div class="export-meta">Format: .xlsx (Multi-Sheet Workbook)</div>
+              </div>
+              <div class="export-card-action">
+                <a href="/api/admin/export/excel" class="btn-export-primary" download>
+                  <i class="fa-solid fa-download"></i> Download Master XLSX
+                </a>
+              </div>
+            </div>
+
+            <!-- Card 2: Online Registrations Sheet -->
+            <div class="export-card">
+              <div class="export-card-icon" style="background: #eff6ff; color: #0284c7;">
+                <i class="fa-solid fa-globe"></i>
+              </div>
+              <div class="export-card-body">
+                <h4>Online Registrations Sheet</h4>
+                <p>Export all pre-registered online participants with their selected events and contact details.</p>
+                <div class="export-meta">Format: .csv / .xlsx</div>
+              </div>
+              <div class="export-card-action">
+                <a href="/api/admin/export/csv?type=online" class="btn-export-outline" download>
+                  <i class="fa-solid fa-download"></i> Download CSV
+                </a>
+              </div>
+            </div>
+
+            <!-- Card 3: Spot Registrations Sheet -->
+            <div class="export-card">
+              <div class="export-card-icon" style="background: #fdf2f8; color: #db2777;">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+              <div class="export-card-body">
+                <h4>Spot Registrations Sheet</h4>
+                <p>Export all on-desk and kiosk spot registrations, fee collection, and ID tag/food issuance status.</p>
+                <div class="export-meta">Format: .csv / .xlsx</div>
+              </div>
+              <div class="export-card-action">
+                <a href="/api/admin/export/csv?type=spot" class="btn-export-outline" download>
+                  <i class="fa-solid fa-download"></i> Download CSV
+                </a>
+              </div>
+            </div>
+
+            <!-- Card 4: Free Fire Tournament Roster -->
+            <div class="export-card">
+              <div class="export-card-icon" style="background: #fef2f2; color: #dc2626;">
+                <i class="fa-solid fa-gamepad"></i>
+              </div>
+              <div class="export-card-body">
+                <h4>Free Fire Tournament Roster</h4>
+                <p>Export complete 4-player squad rosters, team codes, captain details, and registration sources.</p>
+                <div class="export-meta">Format: .csv / .xlsx</div>
+              </div>
+              <div class="export-card-action">
+                <a href="/api/admin/export/excel" class="btn-export-outline" download>
+                  <i class="fa-solid fa-download"></i> Download XLSX
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-TAB 6: SYSTEM & DATABASE CONTROL -->
+      <div class="admin-subtab-pane" id="adminPaneSystem">
+        <div class="pane-card">
+          <div class="pane-header-row">
+            <div>
+              <h3><i class="fa-solid fa-database" style="color: #7c3aed;"></i> System & Database Control Center</h3>
+              <p class="pane-desc">Direct database statistics, table counts, file integrity, and health metrics</p>
+            </div>
+            <button id="btnRefreshSystemInfo" class="btn-refresh"><i class="fa-solid fa-rotate"></i> Refresh
+              Health</button>
+          </div>
+
+          <div class="sys-metrics-grid" id="sysMetricsGrid">
+            <div class="sys-card">
+              <div class="sys-title"><i class="fa-solid fa-server"></i> Database</div>
+              <div class="sys-val" id="sysDbFile">event_spot_registration</div>
+              <div class="sys-sub">Engine: MySQL (InnoDB Pool)</div>
+            </div>
+            <div class="sys-card">
+              <div class="sys-title"><i class="fa-solid fa-user-graduate"></i> Students Records</div>
+              <div class="sys-val" id="sysTableStudents">0</div>
+              <div class="sys-sub">Active student entries</div>
+            </div>
+            <div class="sys-card">
+              <div class="sys-title"><i class="fa-solid fa-ticket"></i> Event Registrations</div>
+              <div class="sys-val" id="sysTableStudentEvents">0</div>
+              <div class="sys-sub">Individual event enrollments</div>
+            </div>
+            <div class="sys-card">
+              <div class="sys-title"><i class="fa-solid fa-shield-halved"></i> Free Fire Players</div>
+              <div class="sys-val" id="sysTableFfPlayers">0</div>
+              <div class="sys-sub">Solo & Squad players</div>
+            </div>
+            <div class="sys-card">
+              <div class="sys-title"><i class="fa-solid fa-people-group"></i> Free Fire Teams</div>
+              <div class="sys-val" id="sysTableFfTeams">0</div>
+              <div class="sys-sub">4-player formed squads</div>
+            </div>
+            <div class="sys-card">
+              <div class="sys-title"><i class="fa-solid fa-triangle-exclamation"></i> Issue Requests Log</div>
+              <div class="sys-val" id="sysTableRequests">0</div>
+              <div class="sys-sub">Audit trail of modifications</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-TAB: COUNTER MANAGEMENT & FACULTY ASSIGNMENT -->
+      <div class="admin-subtab-pane" id="adminPaneCounters">
+        <div class="pane-card">
+          <div class="pane-header-row">
+            <div>
+              <h3><i class="fa-solid fa-headset" style="color: #f59e0b;"></i> Counter Setup & Faculty Assignment</h3>
+              <p class="pane-desc">Manage all 10 registration counters and assign faculty members exclusively. Prevent
+                duplicate assignments.</p>
+            </div>
+            <div class="pane-header-actions">
+              <button type="button" class="btn-excel-pill" id="btnOpenAddFacultyModal"
+                style="background: linear-gradient(135deg, #1e0b36, #3b146e); color: #f59e0b; border: 1.5px solid #f59e0b;">
+                <i class="fa-solid fa-user-plus"></i> Add Faculty Member
+              </button>
+              <button type="button" class="btn-refresh" id="btnRefreshCountersList">
+                <i class="fa-solid fa-rotate"></i> Refresh Counters
+              </button>
+            </div>
+          </div>
+
+          <!-- 10 Counters Assignment Grid -->
+          <div class="counters-cards-grid" id="adminCountersGrid">
+            <div style="padding: 2rem; text-align: center; color: #64748b;">Loading registration counters...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-TAB: COUNTER REGISTRATION REPORT (counter-reg) -->
+      <div class="admin-subtab-pane" id="adminPaneCounterReg">
+        <div class="pane-card">
+          <div class="pane-header-row">
+            <div>
+              <h3><i class="fa-solid fa-chart-pie" style="color: #0284c7;"></i> Counter Registration Report
+                (counter-reg)</h3>
+              <p class="pane-desc">Real-time counter monitoring, revenue collection metrics, and spot registration
+                performance reports</p>
+            </div>
+            <div class="pane-header-actions">
+              <a href="/api/admin/counter-report/export/excel" class="btn-excel-pill" download
+                id="btnExportCounterExcel">
+                <i class="fa-solid fa-file-excel"></i> Export Counter-wise Report to Excel
+              </a>
+              <a href="/api/admin/counter-report/export/overall" class="btn-excel-pill" download
+                id="btnExportOverallExcel" style="background:#0f172a;">
+                <i class="fa-solid fa-file-export"></i> Export Overall Registration Report
+              </a>
+            </div>
+          </div>
+
+          <!-- TOP DASHBOARD SUMMARY (4 KPI CARDS) -->
+          <div class="kpi-master-grid" style="margin-bottom: 1.75rem;">
+            <!-- 1. Total Counters Active -->
+            <div class="kpi-master-card kpi-spot">
+              <div class="kpi-icon-wrap"><i class="fa-solid fa-headset"></i></div>
+              <div class="kpi-data">
+                <span class="kpi-num" id="kpiCounterRegActiveCounters">0 / 10</span>
+                <span class="kpi-title">Total Counters Active</span>
+                <span class="kpi-sub">Counters with assigned faculty</span>
+              </div>
+            </div>
+
+            <!-- 2. Total On-Spot Registrations -->
+            <div class="kpi-master-card kpi-total">
+              <div class="kpi-icon-wrap"><i class="fa-solid fa-users"></i></div>
+              <div class="kpi-data">
+                <span class="kpi-num" id="kpiCounterRegTotalSpot">0</span>
+                <span class="kpi-title">Total On-Spot Registrations</span>
+                <span class="kpi-sub" id="kpiCounterRegTotalSpotSub">Recorded across all counters</span>
+              </div>
+            </div>
+
+            <!-- 3. Total Amount Collected -->
+            <div class="kpi-master-card kpi-revenue">
+              <div class="kpi-icon-wrap"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+              <div class="kpi-data">
+                <span class="kpi-num" id="kpiCounterRegTotalAmount">₹0</span>
+                <span class="kpi-title">Total Amount Collected</span>
+                <span class="kpi-sub">Spot fees collected</span>
+              </div>
+            </div>
+
+            <!-- 4. Highest Performing Counter -->
+            <div class="kpi-master-card kpi-freefire" style="border-left: 4px solid #f59e0b;">
+              <div class="kpi-icon-wrap" style="background:#fef3c7; color:#d97706;"><i class="fa-solid fa-trophy"></i>
+              </div>
+              <div class="kpi-data">
+                <span class="kpi-num" id="kpiCounterRegHighestCounter" style="font-size: 1.25rem;">None</span>
+                <span class="kpi-title">Highest Performing Counter</span>
+                <span class="kpi-sub" id="kpiCounterRegHighestSub">0 Registrations • ₹0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- COUNTER-WISE REGISTRATION CARDS (ALL 10 COUNTERS) -->
+          <div style="margin-bottom: 1.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+              <h4 style="font-size: 1.05rem; font-weight: 800; color: #1e0b36; margin: 0;">
+                <i class="fa-solid fa-table-columns" style="color: #6366f1;"></i> All 10 Counters Breakdown
+              </h4>
+              <span style="font-size: 0.82rem; color: #64748b; font-weight: 600;">Click any counter to filter table
+                below</span>
+            </div>
+            <div class="counter-breakdown-grid" id="adminCounterCardsOverviewGrid">
+              <!-- Dynamically populated 10 cards -->
+            </div>
+          </div>
+
+          <!-- MULTI-LEVEL FILTER TOOLBAR -->
+          <div class="directory-filter-bar" style="margin-bottom: 1.25rem;">
+            <div class="search-input-group" style="flex: 1; min-width: 250px;">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="filterReportSearch"
+                placeholder="Search by Student Name, Phone, Email, College, Reg Code...">
+              <button id="clearFilterReportSearch" class="btn-clear-in-event"><i class="fa-solid fa-xmark"></i>
+                Clear</button>
+            </div>
+
+            <!-- Counter Filter Dropdown -->
+            <div class="filter-group">
+              <label for="filterReportCounter"
+                style="font-size: 0.8rem; font-weight: 700; color: #475569; margin: 0;">Counter:</label>
+              <select id="filterReportCounter" class="report-filter-select">
+                <option value="all">All Counters (1–10)</option>
+                <option value="Counter 1">Counter 1</option>
+                <option value="Counter 2">Counter 2</option>
+                <option value="Counter 3">Counter 3</option>
+                <option value="Counter 4">Counter 4</option>
+                <option value="Counter 5">Counter 5</option>
+                <option value="Counter 6">Counter 6</option>
+                <option value="Counter 7">Counter 7</option>
+                <option value="Counter 8">Counter 8</option>
+                <option value="Counter 9">Counter 9</option>
+                <option value="Counter 10">Counter 10</option>
+              </select>
+            </div>
+
+            <!-- Faculty Filter Dropdown -->
+            <div class="filter-group">
+              <label for="filterReportFaculty"
+                style="font-size: 0.8rem; font-weight: 700; color: #475569; margin: 0;">Faculty:</label>
+              <select id="filterReportFaculty" class="report-filter-select">
+                <option value="all">All Faculty Members</option>
+              </select>
+            </div>
+
+            <!-- Date Filter -->
+            <div class="filter-group">
+              <label for="filterReportDate"
+                style="font-size: 0.8rem; font-weight: 700; color: #475569; margin: 0;">Date:</label>
+              <input type="date" id="filterReportDate" class="report-filter-date">
+            </div>
+
+            <button type="button" class="btn-refresh" id="btnResetReportFilters" title="Reset all filters">
+              <i class="fa-solid fa-rotate-left"></i> Reset
+            </button>
+          </div>
+
+          <!-- Filtered Records Info Bar -->
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding: 0 0.25rem;">
+            <div style="font-size: 0.88rem; font-weight: 700; color: #334155;" id="reportFilteredCountText">
+              Showing 0 spot registrations
+            </div>
+            <div style="font-size: 0.88rem; font-weight: 800; color: #059669;" id="reportFilteredAmountText">
+              Filtered Total: ₹0
+            </div>
+          </div>
+
+          <!-- DETAILED SPOT REGISTRATIONS DATA TABLE -->
+          <div class="table-container">
+            <table class="modern-table" id="tableCounterRegistrations">
+              <thead>
+                <tr>
+                  <th style="width: 40px; text-align: center;">#</th>
+                  <th>Reg Code</th>
+                  <th>Student Name</th>
+                  <th>Phone Number</th>
+                  <th>Email Address</th>
+                  <th>College Name</th>
+                  <th>Counter Number</th>
+                  <th>Faculty In-Charge</th>
+                  <th>Fee Paid (INR)</th>
+                  <th>Pass Type</th>
+                  <th>Registered Events</th>
+                  <th>Registration Time</th>
+                </tr>
+              </thead>
+              <tbody id="adminCounterReportTableBody">
+                <tr>
+                  <td colspan="12" style="text-align:center; padding: 2rem; color: #64748b;">Loading counter
+                    registrations report...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- SUB-TAB: ACCESS CONTROL & CREDENTIALS MANAGEMENT -->
+          <div class="admin-subtab-pane" id="adminPaneAccessControl">
+            <div class="pane-card">
+              <div class="pane-header-row">
+                <div>
+                  <h3><i class="fa-solid fa-key" style="color: #f59e0b;"></i> Access Control & Credentials Management
+                  </h3>
+                  <p class="pane-desc">Manage login credentials for all registration desks, portals, and individual
+                    event coordinators. Changes take effect instantly in real-time.</p>
+                </div>
+                <div class="pane-header-actions">
+                  <button id="btnRefreshCredentials" class="btn-refresh"><i class="fa-solid fa-rotate"></i> Refresh
+                    Credentials</button>
+                </div>
+              </div>
+
+              <!-- CREDENTIALS KPI STATS -->
+              <div class="kpi-cards-grid"
+                style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1.5rem;">
+                <div class="kpi-stat-card total" style="border-left: 4px solid #f59e0b;">
+                  <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;"><i
+                      class="fa-solid fa-shield-halved"></i></div>
+                  <div class="stat-info">
+                    <span class="stat-val" id="kpiTotalCredentials">26</span>
+                    <span class="stat-lbl">Total Protected Desks</span>
+                  </div>
+                </div>
+
+                <div class="kpi-stat-card day1" style="border-left: 4px solid #0284c7;">
+                  <div class="stat-icon" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;"><i
+                      class="fa-solid fa-desktop"></i></div>
+                  <div class="stat-info">
+                    <span class="stat-val" id="kpiPortalCredentials">5</span>
+                    <span class="stat-lbl">Core Portals</span>
+                  </div>
+                </div>
+
+                <div class="kpi-stat-card day2" style="border-left: 4px solid #7c3aed;">
+                  <div class="stat-icon" style="background: rgba(124, 58, 237, 0.15); color: #7c3aed;"><i
+                      class="fa-solid fa-calendar-check"></i></div>
+                  <div class="stat-info">
+                    <span class="stat-val" id="kpiEventCredentials">21</span>
+                    <span class="stat-lbl">Event Coordinator Desks</span>
+                  </div>
+                </div>
+
+                <div class="kpi-stat-card both" style="border-left: 4px solid #059669;">
+                  <div class="stat-icon" style="background: rgba(5, 150, 105, 0.15); color: #059669;"><i
+                      class="fa-solid fa-lock"></i></div>
+                  <div class="stat-info">
+                    <span class="stat-val" style="color: #059669; font-size: 1.15rem; font-weight: 800;">ACTIVE</span>
+                    <span class="stat-lbl">Database Auth Status</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FILTER & SEARCH BAR -->
+              <div class="filter-controls-row"
+                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+                <div class="filter-btn-group" id="credsCategoryFilters" style="display: flex; gap: 0.5rem;">
+                  <button type="button" class="btn-filter-pill active" data-filter-cred="all">All Desks &
+                    Events</button>
+                  <button type="button" class="btn-filter-pill" data-filter-cred="PORTAL">Core Portals (5)</button>
+                  <button type="button" class="btn-filter-pill" data-filter-cred="EVENT">Event Coordinators
+                    (21)</button>
+                </div>
+
+                <div class="search-box-wrap" style="position: relative; min-width: 260px;">
+                  <i class="fa-solid fa-magnifying-glass"
+                    style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                  <input type="text" id="inputSearchCredentials" placeholder="Search by module, event, username..."
+                    style="width: 100%; padding: 0.65rem 1rem 0.65rem 2.4rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.88rem;">
+                </div>
+              </div>
+
+              <!-- CREDENTIALS TABLE -->
+              <div class="table-container">
+                <table class="modern-table" id="tableAccessCredentials">
+                  <thead>
+                    <tr>
+                      <th style="width: 40px; text-align: center;">#</th>
+                      <th>Module / Event Name</th>
+                      <th>Module Key</th>
+                      <th>Category</th>
+                      <th>Username</th>
+                      <th>Password</th>
+                      <th>Last Updated</th>
+                      <th style="text-align: center;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tableBodyCredentials">
+                    <tr>
+                      <td colspan="8" style="text-align:center; padding: 2rem; color: #64748b;">Loading access control
+                        credentials...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+  </main>
+
+  <!-- MODAL 1: REGISTRATION CONFIRMATION SUMMARY -->
+  <div class="modal-overlay" id="modalSummary">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-receipt"></i> Registration Summary</h3>
+        <button class="close-btn" id="closeSummaryModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="summary-rows">
+          <div class="s-row"><span class="lbl">Student Name:</span> <span class="val" id="sumName">-</span></div>
+          <div class="s-row"><span class="lbl">Phone Number:</span> <span class="val" id="sumPhone">-</span></div>
+          <div class="s-row"><span class="lbl">Email Address:</span> <span class="val" id="sumEmail">-</span></div>
+          <div class="s-row"><span class="lbl">College Name:</span> <span class="val" id="sumCollege">-</span></div>
+          <div class="s-row"><span class="lbl">Pass Selection:</span> <span class="val" id="sumDay">-</span></div>
+          <div class="s-row highlight"><span class="lbl">Total Registration Fee:</span> <span class="val fee"
+              id="sumFee">₹250</span></div>
+        </div>
+
+        <div class="summary-events-block">
+          <h4>Selected Events List:</h4>
+          <div id="sumEventsContainer" class="summary-events-list"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="btnEditRegistration">Edit Details</button>
+        <button class="btn-confirm" id="btnConfirmRegister"><i class="fa-solid fa-check"></i> Confirm & Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: REGISTRATION SUCCESS RECEIPT -->
+  <div class="modal-overlay" id="modalSuccess">
+    <div class="modal-content success-box">
+      <div class="modal-body text-center">
+        <div class="success-ring"><i class="fa-solid fa-check"></i></div>
+        <h3>Spot Registration Successful!</h3>
+        <p class="success-sub">Student registration record created</p>
+
+        <div class="ticket-card">
+          <div class="t-name" id="ticketName">Student Name</div>
+          <div class="t-college" id="ticketCollege">College Name</div>
+          <div class="t-pass" id="ticketDay">Pass: Day 1</div>
+          <div class="t-fee" id="ticketFee">Fee Paid: ₹250</div>
+        </div>
+      </div>
+      <div class="modal-footer justify-center">
+        <button class="btn-confirm" id="btnNewRegistration"><i class="fa-solid fa-user-plus"></i> Register Another
+          Student</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: FREE FIRE SPOT SUCCESS TICKET -->
+  <div class="modal-overlay" id="modalFreeFireSuccess">
+    <div class="modal-content success-box">
+      <div class="modal-body text-center">
+        <div class="success-ring"><i class="fa-solid fa-fire-flame-curved"></i></div>
+        <h3>Free Fire Squad Registered!</h3>
+        <p class="success-sub">4-Player Team Registration Confirmed</p>
+
+        <div class="ticket-card ff-ticket-card">
+          <div class="t-team-code" id="ffTicketTeamCode">FF-TEAM-2026-XXXX</div>
+          <div class="t-name" id="ffTicketTeamName">Team Name</div>
+          <div class="t-pass">Event: Free Fire Standalone Tournament</div>
+          <div class="t-fee">Total Team Fee: ₹400</div>
+          <div id="ffTicketMembers" class="ff-ticket-members-list"></div>
+        </div>
+      </div>
+      <div class="modal-footer justify-center">
+        <button class="btn-confirm" id="btnNewFreeFireRegistration"><i class="fa-solid fa-gamepad"></i> Register Another
+          Squad</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: EDIT FREE FIRE TEAM & ROSTER MODAL -->
+  <div class="modal-overlay" id="modalEditFreeFireTeam">
+    <div class="modal-content" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-pen-to-square"></i> Edit Free Fire Team Details</h3>
+        <button class="close-btn" id="closeEditFfTeamModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="formEditFfTeam" onsubmit="return false;">
+          <input type="hidden" id="editFfTeamId">
+
+          <div class="field-group full-width" style="margin-bottom: 1.2rem;">
+            <label for="editFfTeamName"><i class="fa-solid fa-shield-halved"></i> Team / Squad Name *</label>
+            <input type="text" id="editFfTeamName" required>
+          </div>
+
+          <div class="modal-subheading">Edit 4 Player Roster (Names, Phone, College):</div>
+          <div id="editFfMembersContainer" class="edit-ff-members-container"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="btnCancelEditFfTeam">Cancel</button>
+        <button class="btn-confirm" id="btnSaveEditFfTeam"><i class="fa-solid fa-floppy-disk"></i> Save Roster
+          Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: COORDINATOR EDIT PARTICIPANT REQUEST MODAL -->
+  <div class="modal-overlay" id="modalEditRequest">
+    <div class="modal-content" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-pen" style="color: #d97706;"></i> Submit Participant Edit Request</h3>
+        <button class="close-btn" id="closeEditRequestModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 1.2rem; font-weight: 500;">
+          <i class="fa-solid fa-triangle-exclamation" style="color: #d97706;"></i> Changes will be submitted to the
+          <strong>Admin Dashboard</strong> for review and approval before taking effect.
+        </p>
+        <form id="formEditRequest" onsubmit="return false;">
+          <input type="hidden" id="editStudentId">
+          <input type="hidden" id="editRequestEventName">
+
+          <div class="field-group full-width" style="margin-bottom: 1rem;">
+            <label for="editStudentName"><i class="fa-solid fa-user"></i> Student Name *</label>
+            <input type="text" id="editStudentName" required>
+          </div>
+
+          <div class="input-grid" style="margin-bottom: 1rem;">
+            <div class="field-group">
+              <label for="editStudentPhone"><i class="fa-solid fa-phone"></i> Mobile Number *</label>
+              <input type="tel" id="editStudentPhone" maxlength="10" required>
+            </div>
+            <div class="field-group">
+              <label for="editStudentEmail"><i class="fa-solid fa-envelope"></i> Email Address *</label>
+              <input type="email" id="editStudentEmail" required>
+            </div>
+          </div>
+
+          <div class="field-group full-width">
+            <label for="editStudentCollege"><i class="fa-solid fa-building-columns"></i> College Name *</label>
+            <input type="text" id="editStudentCollege" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="btnCancelEditRequest">Cancel</button>
+        <button class="btn-confirm" id="btnSubmitEditRequest" style="background-color: #d97706;"><i
+            class="fa-solid fa-paper-plane"></i> Submit Request to Admin</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 6: EDIT PARTICIPANT EVENT REGISTRATIONS (EVENT ISSUE MANAGEMENT) -->
+  <div class="modal-overlay" id="modalEditParticipantEvents">
+    <div class="modal-content" style="max-width: 780px; max-height: 90vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #1e0b36, #2d1254); color: #fff;">
+        <h3 style="color: #fff;"><i class="fa-solid fa-pen-ruler" style="color: #f59e0b;"></i> Modify Participant Event
+          Registrations</h3>
+        <button class="close-btn" id="closeEditParticipantEventsModal" style="color: #cbd5e1;">&times;</button>
+      </div>
+      <div class="modal-body" style="overflow-y: auto; padding: 1.5rem;">
+
+        <!-- Participant Summary Banner -->
+        <div class="event-issue-participant-card" id="editEventParticipantCard"
+          style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div class="participant-header-row"
+            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <span class="reg-pill" id="mEventRegCode"
+                style="font-size: 0.75rem; font-weight: 800; background: #0284c7; color: #fff; padding: 0.2rem 0.6rem; border-radius: 4px;">SPOT-2026-XXXX</span>
+              <h3 id="mEventStudentName" style="margin: 0.35rem 0 0.2rem 0; color: #0f172a; font-size: 1.25rem;">Student
+                Name</h3>
+              <div style="font-size: 0.85rem; color: #475569;" id="mEventDetails">Phone: - | College: -</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="evt-day-badge" id="mEventPassBadge">Both Days Pass</span>
+              <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.3rem;">Pass limits apply</div>
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size: 0.86rem; color: #475569; margin-bottom: 0.85rem; font-weight: 600;">
+          <i class="fa-solid fa-circle-info" style="color: #0284c7;"></i> Select or deselect events below. Added and
+          removed events are tracked in real time.
+        </p>
+
+        <!-- Events Checkbox Section -->
+        <div class="events-selection-wrapper">
+          <!-- Day 1 Events Block in Modal -->
+          <div class="events-day-section" id="mBlockDay1Events" style="margin-bottom: 1rem;">
+            <div class="section-header"
+              style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span class="day-tag d1"><i class="fa-solid fa-calendar-day"></i> Day 1 Events</span>
+              <span class="count-pill" id="mCounterDay1">Selected: 0 / 2</span>
+            </div>
+            <div class="events-grid modal-events-grid" id="mGridDay1Events"></div>
+          </div>
+
+          <!-- Day 2 Events Block in Modal -->
+          <div class="events-day-section" id="mBlockDay2Events" style="margin-bottom: 1rem;">
+            <div class="section-header"
+              style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span class="day-tag d2"><i class="fa-solid fa-calendar-days"></i> Day 2 Events</span>
+              <span class="count-pill" id="mCounterDay2">Selected: 0 / 2</span>
+            </div>
+            <div class="events-grid modal-events-grid" id="mGridDay2Events"></div>
+          </div>
+        </div>
+
+        <!-- Hackathon Theme Selection Container inside Modal -->
+        <div id="mHackathonThemeContainer" class="hackathon-theme-container"
+          style="display: none; margin-bottom: 1rem;">
+          <div class="hackathon-theme-header"><i class="fa-solid fa-lightbulb"></i> Select Hackathon Theme (1 of 5):
+          </div>
+          <div class="hackathon-theme-pills" id="mHackathonThemePills"></div>
+        </div>
+
+        <!-- LIVE SIDE-BY-SIDE VISUAL DIFF PREVIEW BOX -->
+        <div class="side-by-side-diff-card"
+          style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 1rem; margin-top: 1.25rem;">
+          <div class="diff-card-title"
+            style="font-weight: 800; font-size: 0.95rem; color: #1e0b36; margin-bottom: 0.75rem;">
+            <i class="fa-solid fa-code-compare" style="color: #0284c7;"></i> Live Side-by-Side Change Comparison:
+          </div>
+          <div class="side-by-side-diff-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="diff-side-col"
+              style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.75rem;">
+              <div class="diff-side-header"
+                style="font-size: 0.8rem; font-weight: 800; color: #64748b; margin-bottom: 0.5rem; text-transform: uppercase;">
+                <i class="fa-solid fa-history"></i> Current (Old) Events:
+              </div>
+              <div class="diff-events-list" id="mDiffOldEventsList"></div>
+            </div>
+            <div class="diff-side-col"
+              style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.75rem;">
+              <div class="diff-side-header"
+                style="font-size: 0.8rem; font-weight: 800; color: #0284c7; margin-bottom: 0.5rem; text-transform: uppercase;">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Requested (New) Events:
+              </div>
+              <div class="diff-events-list" id="mDiffNewEventsList"></div>
+            </div>
+          </div>
+          <div class="diff-summary-row" id="mDiffSummaryAlert"
+            style="margin-top: 0.85rem; padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.85rem; font-weight: 700; background: #f1f5f9; color: #475569;">
+            <span class="diff-status-text">No changes selected yet.</span>
+          </div>
+        </div>
+
+        <input type="hidden" id="editEventStudentId">
+      </div>
+      <div class="modal-footer"
+        style="padding: 1rem 1.5rem; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <button type="button" class="btn-cancel" id="btnCancelEditParticipantEvents"
+          style="padding: 0.75rem 1.25rem; border-radius: 10px; font-weight: 700;">Cancel</button>
+        <button type="button" class="btn-confirm" id="btnSubmitEditParticipantEvents"
+          style="background: #0284c7; color: #fff; font-weight: 800; padding: 0.75rem 1.5rem; border-radius: 10px; border: none; cursor: pointer;"><i
+            class="fa-solid fa-paper-plane"></i> Submit Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 7: CONFIRM EVENT TEAM FORMATION -->
+  <div class="modal-overlay" id="modalConfirmEventTeam">
+    <div class="modal-content"
+      style="max-width: 620px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+      <div class="modal-header"
+        style="background: linear-gradient(135deg, #1e0b36, #3b146e); color: #fff; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="color: #fff; margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-people-group" style="color: #38bdf8;"></i> Confirm Team Formation
+        </h3>
+        <button class="close-btn" id="closeConfirmEventTeamModal"
+          style="color: #cbd5e1; background: none; border: none; font-size: 1.6rem; cursor: pointer;">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+
+        <!-- Team Summary Header -->
+        <div class="team-confirm-card"
+          style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <span class="badge-team-id" id="mTeamConfirmCode"
+              style="font-weight: 900; font-size: 1.1rem; background: #1e0b36; color: #38bdf8; padding: 0.35rem 0.85rem; border-radius: 8px; border: 1.5px solid rgba(56, 189, 248, 0.4);">TEAM-001</span>
+            <span class="badge-team-count" id="mTeamConfirmMembersCount"
+              style="font-weight: 800; font-size: 0.9rem; background: #e0f2fe; color: #0284c7; padding: 0.3rem 0.75rem; border-radius: 999px;">3
+              Members</span>
+          </div>
+          <div style="font-size: 1.05rem; font-weight: 800; color: #0f172a;" id="mTeamConfirmEventName">Event Name</div>
+        </div>
+
+        <!-- Team Name Field -->
+        <div class="field-group full-width" style="margin-bottom: 1.25rem;">
+          <label for="mTeamNameInput"
+            style="font-weight: 800; color: #1e0b36; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+            <i class="fa-solid fa-tag" style="color:#0284c7;"></i> Team Name
+          </label>
+          <input type="text" id="mTeamNameInput" placeholder="Enter Team Name (e.g. Team Alpha)"
+            style="background:#fff; border:1.5px solid #cbd5e1; border-radius:10px; padding:0.8rem 1rem; font-size:1rem; font-weight:600; width:100%;">
+        </div>
+
+        <!-- Team Members List -->
+        <div>
+          <label
+            style="font-size: 0.85rem; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 0.65rem; display: block;">
+            <i class="fa-solid fa-users"></i> Selected Team Members:
+          </label>
+          <div id="mTeamConfirmMembersList"
+            style="display: flex; flex-direction: column; gap: 0.55rem; max-height: 240px; overflow-y: auto; padding-right: 4px;">
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer"
+        style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <button type="button" class="btn-cancel" id="btnCancelConfirmEventTeam"
+          style="padding: 0.75rem 1.25rem; border-radius: 10px; font-weight: 700;">Cancel</button>
+        <button type="button" class="btn-confirm" id="btnSubmitConfirmEventTeam"
+          style="background: linear-gradient(135deg, #059669, #10b981); color: #fff; font-weight: 800; padding: 0.75rem 1.75rem; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);">
+          <i class="fa-solid fa-check"></i> Confirm Team
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 8: IMPORT EXCEL DATA & AUTO EVENT SPLITTING -->
+  <div class="modal-overlay" id="modalImportExcel">
+    <div class="modal-content"
+      style="max-width: 680px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+      <div class="modal-header"
+        style="background: linear-gradient(135deg, #065f46, #047857); color: #fff; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="color: #fff; margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 0.6rem;">
+          <i class="fa-solid fa-file-excel" style="color: #6ee7b7;"></i> Import Excel Registrations & Event Split
+        </h3>
+        <button class="close-btn" id="closeImportExcelModal"
+          style="color: #a7f3d0; background: none; border: none; font-size: 1.6rem; cursor: pointer;">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+        <p style="font-size: 0.9rem; color: #475569; margin-bottom: 1.25rem; line-height: 1.5;">
+          Upload your Excel spreadsheet (<code>.xlsx</code>, <code>.xls</code>, or <code>.csv</code>). The engine will
+          automatically match participant records, parse registered events, and split participants into their respective
+          Day 1 & Day 2 events in real time.
+        </p>
+
+        <!-- Dropzone Area -->
+        <div class="excel-upload-dropzone" id="excelDropzone"
+          style="border: 2px dashed #10b981; background: #ecfdf5; border-radius: 14px; padding: 2.25rem 1.5rem; text-align: center; cursor: pointer; transition: all 0.2s ease;">
+          <input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv" style="display: none;">
+          <div id="dropzoneDefaultState">
+            <i class="fa-solid fa-cloud-arrow-up"
+              style="font-size: 3rem; color: #059669; margin-bottom: 0.75rem; display: block;"></i>
+            <h4 style="color: #064e3b; margin: 0 0 0.35rem 0; font-weight: 800; font-size: 1.1rem;">Click to browse or
+              Drag & Drop Excel File here</h4>
+            <span style="font-size: 0.8rem; color: #047857; font-weight: 600;">Supports .xlsx, .xls, .csv files up to
+              50MB</span>
+          </div>
+          <div id="dropzoneSelectedState" style="display: none;">
+            <div
+              style="display: inline-flex; align-items: center; gap: 0.75rem; background: #fff; border: 1.5px solid #10b981; border-radius: 10px; padding: 0.75rem 1.25rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);">
+              <i class="fa-solid fa-file-excel" style="font-size: 2rem; color: #059669;"></i>
+              <div style="text-align: left;">
+                <strong id="selectedFileName"
+                  style="color: #064e3b; font-size: 0.95rem; display: block;">File.xlsx</strong>
+                <span id="selectedFileSize" style="font-size: 0.78rem; color: #64748b;">0 KB</span>
+              </div>
+              <button type="button" id="btnRemoveSelectedFile"
+                style="margin-left: 0.75rem; background: #fee2e2; color: #dc2626; border: none; border-radius: 6px; padding: 0.35rem 0.6rem; cursor: pointer; font-size: 0.8rem; font-weight: 700;">Change</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Template Download & Info Row -->
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; flex-wrap: wrap; gap: 0.75rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.85rem 1rem;">
+          <div style="font-size: 0.82rem; color: #475569; display: flex; align-items: center; gap: 0.4rem;">
+            <i class="fa-solid fa-circle-info" style="color: #0284c7;"></i> Need formatting guidance?
+          </div>
+          <a href="/api/admin/import/sample-template" class="btn-download-sample" download
+            style="font-size: 0.82rem; font-weight: 800; color: #059669; text-decoration: none; display: flex; align-items: center; gap: 0.4rem;">
+            <i class="fa-solid fa-download"></i> Download Sample Excel Template (.xlsx)
+          </a>
+        </div>
+
+        <!-- Import Progress Bar (Hidden during idle) -->
+        <div id="importProgressBarContainer" style="display: none; margin-top: 1.25rem;">
+          <div
+            style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: #064e3b; margin-bottom: 0.4rem;">
+            <span>Importing and splitting participant events...</span>
+            <span id="importProgressPercent">Processing...</span>
+          </div>
+          <div style="width: 100%; height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden;">
+            <div id="importProgressBar"
+              style="width: 100%; height: 100%; background: linear-gradient(90deg, #059669, #10b981); animation: indeterminateProgress 1.5s infinite linear;">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer"
+        style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <button type="button" class="btn-cancel" id="btnCancelImportExcel"
+          style="padding: 0.75rem 1.25rem; border-radius: 10px; font-weight: 700;">Cancel</button>
+        <button type="button" class="btn-confirm" id="btnSubmitExcelImport"
+          style="background: linear-gradient(135deg, #059669, #10b981); color: #fff; font-weight: 800; padding: 0.75rem 1.75rem; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);"
+          disabled>
+          <i class="fa-solid fa-file-import"></i> Upload & Split Events
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 9: IMPORT SUMMARY & EVENT SPLIT BREAKDOWN -->
+  <div class="modal-overlay" id="modalImportSummary">
+    <div class="modal-content"
+      style="max-width: 780px; max-height: 90vh; display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+      <div class="modal-header"
+        style="background: linear-gradient(135deg, #1e0b36, #3b146e); color: #fff; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="color: #fff; margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 0.6rem;">
+          <i class="fa-solid fa-circle-check" style="color: #34d399;"></i> Excel Import & Event Splitting Complete
+        </h3>
+        <button class="close-btn" id="closeImportSummaryModal"
+          style="color: #cbd5e1; background: none; border: none; font-size: 1.6rem; cursor: pointer;">&times;</button>
+      </div>
+      <div class="modal-body" style="overflow-y: auto; padding: 1.5rem;">
+
+        <!-- Summary Header KPI Cards -->
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.85rem; margin-bottom: 1.5rem;">
+          <div
+            style="background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 12px; padding: 0.85rem; text-align: center;">
+            <div id="mImportStatTotal" style="font-size: 1.6rem; font-weight: 900; color: #166534;">0</div>
+            <div style="font-size: 0.75rem; font-weight: 800; color: #15803d; text-transform: uppercase;">Total Students
+            </div>
+          </div>
+          <div
+            style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 0.85rem; text-align: center;">
+            <div id="mImportStatDay1" style="font-size: 1.6rem; font-weight: 900; color: #1e40af;">0</div>
+            <div style="font-size: 0.75rem; font-weight: 800; color: #1d4ed8; text-transform: uppercase;">Day 1 Pass
+            </div>
+          </div>
+          <div
+            style="background: #faf5ff; border: 1.5px solid #e9d5ff; border-radius: 12px; padding: 0.85rem; text-align: center;">
+            <div id="mImportStatDay2" style="font-size: 1.6rem; font-weight: 900; color: #6b21a8;">0</div>
+            <div style="font-size: 0.75rem; font-weight: 800; color: #7e22ce; text-transform: uppercase;">Day 2 Pass
+            </div>
+          </div>
+          <div
+            style="background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 12px; padding: 0.85rem; text-align: center;">
+            <div id="mImportStatBoth" style="font-size: 1.6rem; font-weight: 900; color: #92400e;">0</div>
+            <div style="font-size: 0.75rem; font-weight: 800; color: #b45309; text-transform: uppercase;">Both Days
+            </div>
+          </div>
+          <div
+            style="background: #fdf2f8; border: 1.5px solid #fbcfe8; border-radius: 12px; padding: 0.85rem; text-align: center;">
+            <div id="mImportStatFf" style="font-size: 1.6rem; font-weight: 900; color: #9d174d;">0</div>
+            <div style="font-size: 0.75rem; font-weight: 800; color: #be185d; text-transform: uppercase;">Free Fire
+              Players</div>
+          </div>
+        </div>
+
+        <!-- Section: Event-by-Event Split Grid -->
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+            <h4
+              style="margin: 0; font-size: 1rem; font-weight: 800; color: #1e0b36; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-network-wired" style="color: #0284c7;"></i> Participants Split by Event:
+            </h4>
+            <span id="mImportEventsCountBadge"
+              style="font-size: 0.8rem; font-weight: 800; background: #e0f2fe; color: #0284c7; padding: 0.25rem 0.65rem; border-radius: 999px;">0
+              Events Active</span>
+          </div>
+
+          <div id="mImportEventBreakdownGrid"
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer"
+        style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 1rem 1.5rem; display: flex; justify-content: flex-end;">
+        <button type="button" class="btn-confirm" id="btnCloseImportSummary"
+          style="background: linear-gradient(135deg, #1e0b36, #3b146e); color: #fff; font-weight: 800; padding: 0.75rem 1.75rem; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-check"></i> View in Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD FACULTY MEMBER -->
+  <div class="modal-overlay" id="modalAddFaculty">
+    <div class="modal-content" style="max-width: 450px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #1e0b36, #3b146e); color: #fff;">
+        <h3 style="color: #fff; margin: 0; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-user-plus" style="color: #f59e0b;"></i> Add New Faculty Member
+        </h3>
+        <button class="close-btn" id="closeAddFacultyModal"
+          style="color: #fff; background: none; border: none; font-size: 1.6rem; cursor: pointer;">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+        <form id="formAddFaculty" onsubmit="return false;">
+          <div class="field-group" style="margin-bottom: 1rem;">
+            <label for="inputNewFacultyName"
+              style="font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem; display: block;">
+              <i class="fa-solid fa-user-tie"></i> Faculty Full Name (with Salutation) *
+            </label>
+            <input type="text" id="inputNewFacultyName" placeholder="e.g. Dr. K. Ramesh / Mrs. S. Deepa" required
+              style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem;">
+          </div>
+          <div class="field-group" style="margin-bottom: 1rem;">
+            <label for="inputNewFacultyDept"
+              style="font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem; display: block;">
+              <i class="fa-solid fa-building-user"></i> Department / Designation
+            </label>
+            <input type="text" id="inputNewFacultyDept" placeholder="e.g. Computer Science / Associate Professor"
+              value="Academics"
+              style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem;">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer"
+        style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <button type="button" class="btn-cancel" id="btnCancelAddFaculty"
+          style="padding: 0.65rem 1.25rem; border-radius: 8px; font-weight: 700; background: #e2e8f0; border: none; cursor: pointer;">Cancel</button>
+        <button type="button" class="btn-confirm" id="btnSubmitAddFaculty"
+          style="padding: 0.65rem 1.5rem; border-radius: 8px; font-weight: 800; background: linear-gradient(135deg, #1e0b36, #3b146e); color: #fff; border: none; cursor: pointer;">
+          <i class="fa-solid fa-check"></i> Add to Catalog
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EDIT ACCESS CREDENTIALS -->
+  <div class="modal-overlay" id="modalEditCredentials">
+    <div class="modal-content" style="max-width: 460px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #1e0b36, #3b146e); color: #fff;">
+        <h3 style="color: #fff; margin: 0; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-key" style="color: #f59e0b;"></i> Edit Login Credentials
+        </h3>
+        <button class="close-btn" id="closeEditCredsModal"
+          style="color: #fff; background: none; border: none; font-size: 1.6rem; cursor: pointer;">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+        <form id="formEditCredentials" onsubmit="return false;">
+          <input type="hidden" id="editCredModuleKey">
+
+          <div class="field-group" style="margin-bottom: 1rem;">
+            <label
+              style="font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem; display: block;">
+              <i class="fa-solid fa-building-columns"></i> Module / Event Desk
+            </label>
+            <input type="text" id="editCredModuleName" readonly
+              style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #e2e8f0; background: #f8fafc; border-radius: 8px; font-weight: 700; color: #1e0b36;">
+          </div>
+
+          <div class="field-group" style="margin-bottom: 1rem;">
+            <label for="editCredUsername"
+              style="font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem; display: block;">
+              <i class="fa-solid fa-user"></i> Username *
+            </label>
+            <input type="text" id="editCredUsername" required
+              style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem;">
+          </div>
+
+          <div class="field-group" style="margin-bottom: 1rem;">
+            <label for="editCredPassword"
+              style="font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem; display: block;">
+              <i class="fa-solid fa-lock"></i> Password *
+            </label>
+            <div style="position: relative;">
+              <input type="text" id="editCredPassword" required
+                style="width: 100%; padding: 0.75rem 2.8rem 0.75rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem;">
+              <button type="button" id="btnToggleEditPassword"
+                style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748b; cursor: pointer;">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+            <p style="font-size: 0.76rem; color: #64748b; margin-top: 0.3rem;">
+              <i class="fa-solid fa-circle-info"></i> Updating this will immediately change the login password for this
+              desk/event.
+            </p>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer"
+        style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <button type="button" class="btn-cancel" id="btnCancelEditCreds"
+          style="padding: 0.65rem 1.25rem; border-radius: 8px; font-weight: 700; background: #e2e8f0; border: none; cursor: pointer;">Cancel</button>
+        <button type="button" class="btn-confirm" id="btnSubmitEditCreds"
+          style="padding: 0.65rem 1.5rem; border-radius: 8px; font-weight: 800; background: linear-gradient(135deg, #1e0b36, #3b146e); color: #fff; border: none; cursor: pointer;">
+          <i class="fa-solid fa-floppy-disk"></i> Save & Apply Password
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: UNIVERSAL DESK ACCESS LOGIN -->
+  <div class="modal-overlay" id="modalDeskLogin">
+    <div class="modal-content" style="max-width: 440px;">
+      <div class="modal-header"
+        style="background: linear-gradient(135deg, #1e0b36, #3b146e); color: #fff; text-align: center; flex-direction: column; align-items: center; position: relative;">
+        <button class="close-btn" id="closeDeskLoginModal"
+          style="color: #fff; background: none; border: none; font-size: 1.6rem; cursor: pointer; position: absolute; right: 1rem; top: 1rem;">&times;</button>
+        <div
+          style="width: 50px; height: 50px; border-radius: 50%; background: rgba(245, 158, 11, 0.2); border: 2px solid #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #f59e0b; margin-bottom: 0.5rem;">
+          <i class="fa-solid fa-lock" id="deskLoginIcon"></i>
+        </div>
+        <h3 id="deskLoginTitle" style="color: #fff; margin: 0; font-size: 1.2rem;">Desk Authentication</h3>
+        <p id="deskLoginSubtitle" style="color: #cbd5e1; font-size: 0.82rem; margin: 0.25rem 0 0 0;">Enter authorized
+          credentials to unlock this portal</p>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+        <form id="formDeskLogin" onsubmit="return false;">
+          <input type="hidden" id="deskLoginModuleKey">
+
+          <div class="field-group" style="margin-bottom: 1rem;">
+            <label for="inputDeskLoginUsername"
+              style="font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem; display: block;">
+              <i class="fa-solid fa-user"></i> Username
+            </label>
+            <input type="text" id="inputDeskLoginUsername" placeholder="Enter username" autocomplete="username" required
+              style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem;">
+          </div>
+
+          <div class="field-group" style="margin-bottom: 1.25rem;">
+            <label for="inputDeskLoginPassword"
+              style="font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 0.35rem; display: block;">
+              <i class="fa-solid fa-key"></i> Password
+            </label>
+            <div style="position: relative;">
+              <input type="password" id="inputDeskLoginPassword" placeholder="Enter password"
+                autocomplete="current-password" required
+                style="width: 100%; padding: 0.75rem 2.8rem 0.75rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem;">
+              <button type="button" id="btnToggleDeskLoginPassword"
+                style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748b; cursor: pointer;">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+            <div id="deskLoginHintBox"
+              style="margin-top: 0.5rem; font-size: 0.78rem; color: #0284c7; background: #f0f9ff; padding: 0.4rem 0.6rem; border-radius: 6px; border: 1px solid #bae6fd;">
+              <i class="fa-solid fa-lightbulb"></i> Default: <strong id="deskLoginHintText">spot / spot123</strong>
+            </div>
+          </div>
+
+          <div id="deskLoginErrorMsg"
+            style="display: none; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; padding: 0.6rem; border-radius: 6px; font-size: 0.82rem; margin-bottom: 1rem; text-align: center;">
+            <i class="fa-solid fa-circle-exclamation"></i> Invalid username or password.
+          </div>
+
+          <button type="button" id="btnSubmitDeskLogin"
+            style="width: 100%; padding: 0.85rem; border-radius: 8px; font-weight: 800; font-size: 0.95rem; background: linear-gradient(135deg, #1e0b36, #3b146e); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+            <i class="fa-solid fa-unlock"></i> Unlock & Access Desk
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
