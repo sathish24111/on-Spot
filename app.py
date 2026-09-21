@@ -555,8 +555,85 @@ def get_events():
 
 
 # ==========================================
-# 2. SPOT REGISTRATION
+# 2. SEQUENTIAL SPOT CODE GENERATORS & SPOT REGISTRATION
 # ==========================================
+def get_next_spot_reg_code(cur=None):
+    """
+    Finds the next sequential SPOT registration number: 'SPOT-001', 'SPOT-002', etc.
+    Matches codes in format 'SPOT-XXX' (pure integer digits) and returns max + 1 formatted as 'SPOT-{num:03d}'.
+    """
+    query = "SELECT reg_code FROM students WHERE reg_code LIKE %s"
+    if cur:
+        cur.execute(query, ('SPOT-%',))
+        rows = cur.fetchall()
+    else:
+        rows = query_all(query, ('SPOT-%',))
+
+    max_num = 0
+    for r in rows:
+        code = str(r['reg_code'] if isinstance(r, dict) else r[0]).strip().upper()
+        # Matches SPOT-001, SPOT-1, SPOT-099, SPOT-100 etc. (ignores legacy SPOT-2026-xxxx)
+        m = re.match(r'^SPOT-(\d+)$', code)
+        if m:
+            try:
+                val = int(m.group(1))
+                if val > max_num:
+                    max_num = val
+            except ValueError:
+                pass
+
+    next_num = max_num + 1
+    candidate = f"SPOT-{next_num:03d}"
+
+    if cur:
+        while True:
+            cur.execute("SELECT id FROM students WHERE reg_code = %s", (candidate,))
+            if not cur.fetchone():
+                break
+            next_num += 1
+            candidate = f"SPOT-{next_num:03d}"
+
+    return candidate
+
+
+def get_next_ff_spot_team_code(cur=None):
+    """
+    Finds the next sequential Free Fire SPOT team code: 'SPOT-FF-001', 'SPOT-FF-002', etc.
+    """
+    query = "SELECT team_code FROM freefire_teams WHERE team_code LIKE %s OR team_code LIKE %s OR team_code LIKE %s"
+    params = ('SPOT-FF-%', 'FF-SPOT-%', 'FF-TEAM-%')
+    if cur:
+        cur.execute(query, params)
+        rows = cur.fetchall()
+    else:
+        rows = query_all(query, params)
+
+    max_num = 0
+    for r in rows:
+        code = str(r['team_code'] if isinstance(r, dict) else r[0]).strip().upper()
+        m = re.match(r'^(?:SPOT-FF|FF-SPOT|FF-TEAM)-(\d+)$', code)
+        if m:
+            try:
+                val = int(m.group(1))
+                if val > max_num:
+                    max_num = val
+            except ValueError:
+                pass
+
+    next_num = max_num + 1
+    candidate = f"SPOT-FF-{next_num:03d}"
+
+    if cur:
+        while True:
+            cur.execute("SELECT id FROM freefire_teams WHERE team_code = %s", (candidate,))
+            if not cur.fetchone():
+                break
+            next_num += 1
+            candidate = f"SPOT-FF-{next_num:03d}"
+
+    return candidate
+
+
 @app.route('/api/register', methods=['POST'])
 def register_student():
     try:
@@ -630,9 +707,6 @@ def register_student():
         else:
             total_fee = PRICING['DAY2_ONLY']
 
-        random_suffix = random.randint(1000, 9999)
-        reg_code = f"SPOT-2026-{random_suffix}"
-
         final_counter = str(counter_name).strip() if counter_name and str(counter_name).strip() else None
         final_faculty = str(faculty_name).strip() if faculty_name and str(faculty_name).strip() else None
 
@@ -645,6 +719,7 @@ def register_student():
         try:
             conn.begin()
             with conn.cursor() as cur:
+                reg_code = get_next_spot_reg_code(cur)
                 cur.execute(
                     "INSERT INTO students (reg_code, name, phone, email, college, day_selection, total_fee, registration_type, counter_name, faculty_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                     (reg_code, name, phone, email, college, day_selection, total_fee, 'SPOT', final_counter, final_faculty)
@@ -2079,9 +2154,13 @@ def import_excel():
 
                         final_reg_code = raw_code.upper() if raw_code else ''
                         if not final_reg_code or final_reg_code in existing_codes:
-                            final_reg_code = gen_code('FLAGGED-2026' if is_invalid_mode else ('SPOT-2026' if reg_type == 'SPOT' else 'ONLINE-2026'))
-                        else:
-                            existing_codes.add(final_reg_code)
+                            if is_invalid_mode:
+                                final_reg_code = gen_code('FLAGGED-2026')
+                            elif reg_type == 'SPOT':
+                                final_reg_code = get_next_spot_reg_code(cur)
+                            else:
+                                final_reg_code = gen_code('ONLINE-2026')
+                        existing_codes.add(final_reg_code)
 
                         theme_val = match_hackathon_theme(raw_theme) if any(e['id'] == 'd1_hackathon' for e in matched_events) else None
 
@@ -2237,14 +2316,12 @@ def freefire_spot_register():
             if c_row and c_row.get('faculty_name'):
                 final_faculty = c_row['faculty_name']
 
-        random_num = random.randint(1000, 9999)
-        team_code = f"FF-TEAM-2026-{random_num}"
-        reg_code = f"SPOT-2026-{random_num}"
-
         conn = get_connection()
         try:
             conn.begin()
             with conn.cursor() as cur:
+                team_code = get_next_ff_spot_team_code(cur)
+                reg_code = get_next_spot_reg_code(cur)
                 cur.execute(
                     "INSERT INTO freefire_teams (team_code, team_name, registration_source, counter_name, faculty_name) VALUES (%s, %s, %s, %s, %s)",
                     (team_code, team_name, 'SPOT', final_counter, final_faculty)
@@ -2293,16 +2370,22 @@ def freefire_spot_register():
             conn.close()
 
     except Exception as e:
-        print(f"Free Fire registration error: {e}")
-        return jsonify({'success': False, 'message': 'Failed to process Free Fire team registration.'}), 500
+        print(f"Error registering Free Fire team: {e}")
+        return jsonify({'success': False, 'message': f"Server error: {str(e)}"}), 500
+
 
 @app.route('/api/freefire/unassigned-online-players', methods=['GET'])
 def get_unassigned_freefire_players():
     try:
-        players = query_all("SELECT id, name, phone, email, college, registration_type, registered_at FROM freefire_players WHERE team_id IS NULL ORDER BY registered_at ASC")
-        return jsonify({'success': True, 'count': len(players), 'players': players})
+        players = query_all("""
+            SELECT id, name, phone, email, college, registration_type, registered_at
+            FROM freefire_players
+            WHERE team_id IS NULL
+            ORDER BY id ASC
+        """)
+        return jsonify({'success': True, 'players': players})
     except Exception as e:
-        print(f"Error fetching online players: {e}")
+        print(f"Error fetching online solo players: {e}")
         return jsonify({'success': False, 'message': 'Failed to fetch online solo players.'}), 500
 
 @app.route('/api/freefire/create-team', methods=['POST'])
@@ -2317,13 +2400,11 @@ def create_freefire_team():
         if not isinstance(player_ids, list) or len(player_ids) != 4:
             return jsonify({'success': False, 'message': 'Exactly 4 player IDs must be selected to form a team.'}), 400
 
-        random_num = random.randint(1000, 9999)
-        team_code = f"FF-TEAM-2026-{random_num}"
-
         conn = get_connection()
         try:
             conn.begin()
             with conn.cursor() as cur:
+                team_code = get_next_ff_spot_team_code(cur)
                 cur.execute("INSERT INTO freefire_teams (team_code, team_name, registration_source) VALUES (%s, %s, %s)", (team_code, team_name, 'COORDINATOR_FORMED'))
                 team_id = cur.lastrowid
 
